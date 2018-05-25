@@ -12,12 +12,12 @@ class TabbarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let selectCompany_vc = storyboard?.instantiateViewController(withIdentifier: "selectCompany_vc") as! SelectCompanyViewController
+//        let selectCompany_vc = storyboard?.instantiateViewController(withIdentifier: "selectCompany_vc") as! SelectCompanyViewController
         let selectProject_vc = storyboard?.instantiateViewController(withIdentifier: "selectproject_vc") as! SelectProjectViewController
         let devList_vc = storyboard?.instantiateViewController(withIdentifier: "devList_vc") as! DeveloperListViewController
         let mytask_vc = storyboard?.instantiateViewController(withIdentifier: "mytask_vc") as! MyTaskViewController
         let profile_vc = storyboard?.instantiateViewController(withIdentifier: "profile_vc") as! ProfileViewController
-        let accountList_vc = storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
+//        let accountList_vc = storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
         
         
         if let user_role = UserDefaults.standard.string(forKey: "Role") {
