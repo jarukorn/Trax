@@ -1,0 +1,6 @@
+framework module Pods_Senior_Project_I {
+  umbrella header "Pods-Senior Project I-umbrella.h"
+
+  export *
+  module * { export * }
+}
