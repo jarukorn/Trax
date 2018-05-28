@@ -8,17 +8,22 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
+
 class DeveloperListViewController: UIViewController {
     
     
     var myDevList: [MyDeveloperList]?
     var devImageList = [UIImage]()
+    let activityView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Developer List"
+        activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         fetch()
         // Do any additional setup after loading the view.
     }
@@ -28,14 +33,14 @@ class DeveloperListViewController: UIViewController {
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/trax/getdeveloperlist?userid=\(userID)&accountname=\(accountName!)"
         let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
-        SVProgressHUD.show(withStatus: "Fetching...")
+        activityView.startAnimating()
         Alamofire.request(safeURL!).responseJSON { (response) in
            do {
                 let myDeveloperList = try JSONDecoder().decode([MyDeveloperList].self, from: response.data!)
                 self.myDevList = myDeveloperList
                 print("pass")
                 self.tableView.reloadData()
-                SVProgressHUD.dismiss()
+                self.activityView.stopAnimating()
             } catch let error {
                 print("\(error)")
             }

@@ -8,12 +8,12 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 class TaskAndBugDetailViewController: UIViewController {
 
     var task: WorkItem?
     var devImage: UIImage?
     var comments: [Comment]?
+    let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var taskName: UILabel!
@@ -33,6 +33,9 @@ class TaskAndBugDetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         
         if let t = task {
             taskName.text = t.WorkItemName
@@ -82,12 +85,12 @@ class TaskAndBugDetailViewController: UIViewController {
             let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
             Alamofire.request(safeURL!).responseJSON { (response) in
                 do {
-                    SVProgressHUD.show(withStatus: "Fetching...")
+                    self.activityView.startAnimating()
                     let comments = try JSONDecoder().decode([Comment].self, from: response.data!)
                     self.comments = comments
                     print("pass")
                     self.tableView.reloadData()
-                    SVProgressHUD.dismiss()
+                    self.activityView.stopAnimating()
                 } catch {
                     print("error")
                 }

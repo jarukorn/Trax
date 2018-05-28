@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 class DeveloperViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
@@ -23,11 +22,14 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
     var dev : Developer?
     var devImage : UIImage?
     var workList: WorkItemList?
+    let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Developer Overview"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         devNameLabel.text = dev!.DisplayName ?? ""
         devImageView.image = devImage
         doneLabel.text = "\(dev?.Done ?? 0)"
@@ -39,7 +41,7 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func fetch() {
-        SVProgressHUD.show(withStatus: "Fetching...")
+        activityView.startAnimating()
         let userID = UserDefaults.standard.integer(forKey: "UserID")
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/trax/getworkItemlist?workitemlist=\(dev!.WorkItemIDs!)&userid=\(userID)&accountName=\(accountName!)"
@@ -50,7 +52,7 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
                 self.workList = workList
                 print("pass")
                 self.tableViewList.reloadData()
-                SVProgressHUD.dismiss()
+                self.activityView.stopAnimating()
             } catch {
                 print("error")
             }

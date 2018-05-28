@@ -74,8 +74,7 @@ class LaunchScreenViewController: UIViewController {
                             let alert = UIAlertController(title: "Authentication Fail", message: "Invaid username or passsword", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                             DispatchQueue.main.async {
-                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-                                self.present(vc, animated: true, completion: nil)
+                                self.present(alert, animated: true, completion: nil)
                             }
                         }
                     }

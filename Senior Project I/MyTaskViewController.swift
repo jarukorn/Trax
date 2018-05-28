@@ -8,24 +8,26 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 
 class MyTaskViewController: UIViewController {
 
     var myTask: MyTask?
     var devImage: UIImage?
+    let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         fetch()
 
     }
     
     func fetch() {
-        SVProgressHUD.show(withStatus: "Fetching")
+        activityView.startAnimating()
         let userID = UserDefaults.standard.integer(forKey: "UserID")
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/tfs/GetTodayTasks?userid=\(userID)&accountname=\(accountName!)"
@@ -41,7 +43,7 @@ class MyTaskViewController: UIViewController {
                 } catch {
                     print("Error")
                 }
-                SVProgressHUD.dismiss()
+                self.activityView.stopAnimating()
                 
             }
             

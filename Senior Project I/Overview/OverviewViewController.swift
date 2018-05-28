@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 
 class OverviewViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -19,6 +18,7 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
     var taskImageList = [UIImage]()
     var bugImageList = [UIImage]()
     var projectName : String?
+    let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var projectNameLabel: UILabel!
@@ -28,18 +28,21 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Project Overview"
         fetch()
-        
+        activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         
         
         
     }
     
     func fetch() {
-        SVProgressHUD.show(withStatus: "Fetching...")
+        activityView.startAnimating()
         let userID = UserDefaults.standard.integer(forKey: "UserID")
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/trax/getworkItemlist?workitemlist=\(workItemList!)&userid=\(userID)&accountname=\(accountName!)"
@@ -55,7 +58,7 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
                 self.numberofCompleteLabel.text = "\(workList.Done ?? 0)"
                 self.numberofRemainingLabel.text = "\(workList.Due ?? 0)"
                 self.table.reloadData()
-                SVProgressHUD.dismiss()
+                self.activityView.stopAnimating()
             } catch {
                 print("error")
             }

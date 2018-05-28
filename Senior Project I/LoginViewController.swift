@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 
 class LoginViewController: UIViewController {
 
@@ -25,6 +24,7 @@ class LoginViewController: UIViewController {
         self.hideKeyboardWhenTappedAround()
         activityView.center = view.center
         activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         if let username = UserDefaults.standard.string(forKey: "Username") {
             if let password = UserDefaults.standard.string(forKey: "Password") {
                 fetch(username: username,password: password)
@@ -35,12 +35,21 @@ class LoginViewController: UIViewController {
     
     func fetch(username:String, password:String) {
         activityView.startAnimating()
-        if Connectivity.isConnectedToInternet() {
-            Alamofire.request("http://traxtfsapi.azurewebsites.net/tfs/login?username=\(username)&password=\(password)").responseJSON { (response) in
+        if !Connectivity.isConnectedToInternet() {
+            let alert = UIAlertController(title: "Connection Fail", message: "There is no internet connection.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        print("http://traxtfsapi.azurewebsites.net/tfs/login?username=\(username)&password=\(password)")
+        Alamofire.request("http://traxtfsapi.azurewebsites.net/tfs/login?username=\(username)&password=\(password)").responseJSON { (response) in
                 if let json = response.result.value as? [String:AnyObject] {
                     let isSuccess = json["isSuccess"] as?  Bool
-                    if let success = isSuccess {
-                        if (success == true) {
+                    if let success = isSuccess
+                    {
+                        if (success == true)
+                        {
                             do {
                                 let loginAccessAndTask = try JSONDecoder().decode(LoginAccessAndMyTask.self, from: response.data!)
                                 UserDefaults.standard.set(loginAccessAndTask.UserID, forKey: "UserID")
@@ -48,6 +57,8 @@ class LoginViewController: UIViewController {
                                 UserDefaults.standard.set(loginAccessAndTask.ImageUrl, forKey: "ImageUrl")
                                 UserDefaults.standard.set(loginAccessAndTask.Email, forKey: "UniqueName")
                                 UserDefaults.standard.set(loginAccessAndTask.Role, forKey: "Role")
+                                UserDefaults.standard.set(username, forKey: "Username")
+                                UserDefaults.standard.set(password, forKey: "Password")
                                 self.activityView.stopAnimating()
                                 if loginAccessAndTask.Role != nil {
                                     let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
@@ -61,25 +72,15 @@ class LoginViewController: UIViewController {
                             } catch {
                                 print("error")
                             }
-                            
-                            
-                            
                         } else {
                             let alert = UIAlertController(title: "Authentication Fail", message: "Invaid username or passsword", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
                             DispatchQueue.main.async {
-                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-                                self.present(vc, animated: true, completion: nil)
+                                self.present(alert, animated: true, completion: nil)
                             }
+                            self.activityView.stopAnimating()
                         }
                     }
-                }
-            }
-        } else {
-            let alert = UIAlertController(title: "Connection Fail", message: "There is no internet connection.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            DispatchQueue.main.async {
-                self.present(alert, animated: true, completion: nil)
             }
         }
     }

@@ -20,15 +20,16 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityView.center = self.view.center
         activityView.hidesWhenStopped = true
+        view.addSubview(activityView)
         accountName = UserDefaults.standard.string(forKey: "accountName")
-        
+        activityView.startAnimating()
+        fetch()
         if (accountName != nil) {
             navigationItem.title = accountName!
-            fetch()
         } else {
             navigationItem.title = "Projects List"
-            fetch()
         }
     }
     
@@ -37,7 +38,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func fetch() {
-        activityView.startAnimating()
+        
         let userID = UserDefaults.standard.integer(forKey: "UserID")
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/trax/getprojectlist?userid=\(userID)&accountname=\(accountName!)"
