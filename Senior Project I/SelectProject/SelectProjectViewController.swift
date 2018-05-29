@@ -87,7 +87,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                     cell.graphView.addSubview(chart)
                     chart.frame = CGRect(x: 0 , y: 50, width: 240*0.7, height: 180*0.7)
                     let chartValues = [ ["name":"first", "value": taskProgress.DoneTask ?? 0, "color":UIColor(hexString:"#33AD5F")],
-                                        ["name":"second", "value": taskProgress.DueTask ?? 0, "color":UIColor(hexString:"#23A3FD")],
+                                        ["name":"second", "value": taskProgress.DueTask ?? 0, "color":UIColor(hexString:"#808080")],
                                         ["name":"third", "value": taskProgress.DoingTask ?? 0, "color":UIColor(hexString:"#FECA5D")]]
                     chart.setChartValues(chartValues as [AnyObject], animation:false)
                 }

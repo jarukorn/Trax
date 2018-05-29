@@ -42,4 +42,8 @@ extension AccountListViewController: UITableViewDataSource, UITableViewDelegate 
         UserDefaults.standard.set(accountName![indexPath.row], forKey: "accountName")
         self.present(tabbar_vc, animated: true, completion: nil)
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
 }

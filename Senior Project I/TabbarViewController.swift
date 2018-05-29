@@ -28,7 +28,7 @@ class TabbarViewController: UITabBarController {
                 profile_vc.tabBarItem = UITabBarItem(title: "Profile", image: resizeImage(image: #imageLiteral(resourceName: "user"), newWidth: 32), tag: 2)
                 viewControllers = [UINavigationController(rootViewController: selectProject_vc), UINavigationController(rootViewController: devList_vc), UINavigationController(rootViewController: profile_vc)]
                 
-            case "ProjectManager":
+            case "TeamLeader":
                 mytask_vc.tabBarItem = UITabBarItem(title: "My Task", image: #imageLiteral(resourceName: "Task-1"), tag: 0)
                 selectProject_vc.tabBarItem = UITabBarItem(title: "Project", image: #imageLiteral(resourceName: "task"), tag: 1)
                 profile_vc.tabBarItem = UITabBarItem(title: "Profile", image: resizeImage(image: #imageLiteral(resourceName: "user"), newWidth: 32), tag: 2)

@@ -109,6 +109,9 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
                                 imageList.append(#imageLiteral(resourceName: "user"))
                             }
                             
+                        } else {
+                            cell.developerPic.image = #imageLiteral(resourceName: "user")
+                            imageList.append(#imageLiteral(resourceName: "user"))
                         }
                     }
                 }
@@ -237,7 +240,7 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0:
             let vc = storyboard?.instantiateViewController(withIdentifier: "dev_vc") as! DeveloperViewController
             vc.dev = workList?.MemberList![indexPath.row]
-            vc.devImage = imageList[indexPath.row]
+            vc.devImage = imageList[indexPath.row] ?? nil
             navigationController?.pushViewController(vc, animated: true)
         case 1:
             let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController

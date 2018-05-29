@@ -61,6 +61,7 @@ class LaunchScreenViewController: UIViewController {
                                 if loginAccessAndTask.Role != nil {
                                     let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
                                     accountVc.accountName = loginAccessAndTask.AccountList
+                                    UserDefaults.standard.set(loginAccessAndTask.AccountList, forKey: "accountList")
                                     let account_nav = UINavigationController(rootViewController: accountVc)
                                     
                                     self.present(account_nav, animated: true, completion: nil)
