@@ -16,6 +16,7 @@ class LaunchScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activityView.center = self.view.center
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         activityView.startAnimating()
         self.view.addSubview(activityView)
         // Do any additional setup after loading the view.
@@ -73,7 +74,9 @@ class LaunchScreenViewController: UIViewController {
                         } else {
                             let alert = UIAlertController(title: "Authentication Fail", message: "Invaid username or passsword", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
                             DispatchQueue.main.async {
+                                self.present(vc, animated: true, completion: nil)
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }

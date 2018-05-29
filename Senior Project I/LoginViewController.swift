@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
         self.hideKeyboardWhenTappedAround()
         activityView.center = view.center
         activityView.hidesWhenStopped = true
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
         if let username = UserDefaults.standard.string(forKey: "Username") {
             if let password = UserDefaults.standard.string(forKey: "Password") {

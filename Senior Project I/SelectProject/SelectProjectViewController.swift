@@ -22,9 +22,12 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
         super.viewDidLoad()
         activityView.center = self.view.center
         activityView.hidesWhenStopped = true
-        view.addSubview(activityView)
-        accountName = UserDefaults.standard.string(forKey: "accountName")
         activityView.startAnimating()
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+        view.addSubview(activityView)
+        
+        
+        accountName = UserDefaults.standard.string(forKey: "accountName")
         fetch()
         if (accountName != nil) {
             navigationItem.title = accountName!

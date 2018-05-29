@@ -35,6 +35,8 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationItem.title = "Project Overview"
         fetch()
         activityView.hidesWhenStopped = true
+        activityView.center = self.view.center
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
         
         

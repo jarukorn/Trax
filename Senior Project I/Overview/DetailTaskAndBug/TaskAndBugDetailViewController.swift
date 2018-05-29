@@ -35,17 +35,13 @@ class TaskAndBugDetailViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         activityView.hidesWhenStopped = true
+        activityView.center = self.tableView.center
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+        activityView.startAnimating()
         view.addSubview(activityView)
         
         if let t = task {
             taskName.text = t.WorkItemName
-            if (t.Priority == 4 || t.Priority == 3) {
-                colorPirority.backgroundColor = #colorLiteral(red: 0.1439316273, green: 0.6425683498, blue: 0.9966294169, alpha: 1)
-            } else  if (t.Priority == 2) {
-                colorPirority.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
-            } else  if (t.Priority == 1) {
-                colorPirority.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-            }
             taskPirority.text = {
                 switch t.Priority {
                 case 1:
@@ -76,6 +72,7 @@ class TaskAndBugDetailViewController: UIViewController {
             }()
             descriptionLabel.text = t.Description
             devPicture.image = devImage
+            startDate.text = String((t.StartDateTime?.prefix(10))!)
 //            assignTo.text = task!.assignTo
   
             
@@ -85,7 +82,6 @@ class TaskAndBugDetailViewController: UIViewController {
             let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
             Alamofire.request(safeURL!).responseJSON { (response) in
                 do {
-                    self.activityView.startAnimating()
                     let comments = try JSONDecoder().decode([Comment].self, from: response.data!)
                     self.comments = comments
                     print("pass")

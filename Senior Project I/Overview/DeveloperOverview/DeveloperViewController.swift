@@ -29,7 +29,9 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         navigationItem.title = "Developer Overview"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         activityView.hidesWhenStopped = true
+        activityView.center = self.tableViewList.center
         view.addSubview(activityView)
+        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         devNameLabel.text = dev!.DisplayName ?? ""
         devImageView.image = devImage
         doneLabel.text = "\(dev?.Done ?? 0)"

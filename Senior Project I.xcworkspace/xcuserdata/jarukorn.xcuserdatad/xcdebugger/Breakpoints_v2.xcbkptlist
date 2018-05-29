@@ -263,11 +263,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/RegisterViewController.swift"
-            timestampString = "549217539.3505189"
+            timestampString = "549306002.06856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "signUp(_:)"
             landmarkType = "7">
             <Locations>
@@ -311,11 +311,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/SelectProject/SelectProjectViewController.swift"
-            timestampString = "549218737.6517479"
+            timestampString = "549290762.719471"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "fetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -327,11 +327,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/Overview/OverviewViewController.swift"
-            timestampString = "549218737.6519181"
+            timestampString = "549290762.719539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "fetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -343,11 +343,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/Overview/OverviewViewController.swift"
-            timestampString = "549218737.65206"
+            timestampString = "549290762.719599"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -359,11 +359,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/MyTaskViewController.swift"
-            timestampString = "549218737.652197"
+            timestampString = "549290762.719656"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "didReceiveMemoryWarning()"
             landmarkType = "7">
          </BreakpointContent>
@@ -375,11 +375,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.652334"
+            timestampString = "549304439.700141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -391,11 +391,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/SelectProject/SelectProjectViewController.swift"
-            timestampString = "549218737.652485"
+            timestampString = "549290762.71977"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -407,11 +407,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/Overview/DeveloperOverview/DeveloperViewController.swift"
-            timestampString = "549218737.652624"
+            timestampString = "549290762.7198319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "fetch()"
             landmarkType = "7">
             <Locations>
@@ -455,11 +455,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/Overview/DeveloperOverview/DeveloperViewController.swift"
-            timestampString = "549218737.652759"
+            timestampString = "549290762.719888"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "fetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -471,11 +471,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/SelectProject/SelectProjectViewController.swift"
-            timestampString = "549218737.652889"
+            timestampString = "549290762.719945"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "fetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -487,11 +487,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/SelectProject/SelectProjectViewController.swift"
-            timestampString = "549218737.6530221"
+            timestampString = "549290762.720006"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "fetch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -503,7 +503,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.653312"
+            timestampString = "549304439.7003551"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
@@ -519,11 +519,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.653463"
+            timestampString = "549304439.700425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "fetch(username:password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -535,11 +535,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.653609"
+            timestampString = "549304439.700485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "fetch(username:password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -551,11 +551,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LaunchScreenViewController.swift"
-            timestampString = "549218737.653756"
+            timestampString = "549306002.069388"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "fetch(username:password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -563,47 +563,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LaunchScreenViewController.swift"
-            timestampString = "549218737.653898"
+            timestampString = "549306002.0694571"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Senior_Project_I.LaunchScreenViewController.viewDidAppear(Swift.Bool) -&gt; ()"
                   moduleName = "Senior Project I"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/LaunchScreenViewController.swift"
-                  timestampString = "549218738.0696599"
+                  timestampString = "549284104.027985"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
                   endingLineNumber = "31"
-                  offsetFromSymbolStart = "848">
+                  offsetFromSymbolStart = "1090">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Senior_Project_I.LaunchScreenViewController.viewDidAppear(Swift.Bool) -&gt; ()"
                   moduleName = "Senior Project I"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/LaunchScreenViewController.swift"
-                  timestampString = "549218738.076685"
+                  timestampString = "549284104.031859"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
                   endingLineNumber = "31"
-                  offsetFromSymbolStart = "1352">
+                  offsetFromSymbolStart = "1660">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -615,11 +615,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.654034"
+            timestampString = "549304439.7006691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "fetch(username:password:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -631,13 +631,125 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Senior Project I/LoginViewController.swift"
-            timestampString = "549218737.654168"
+            timestampString = "549304439.700725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "fetch(username:password:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Senior Project I/LoginViewController.swift"
+            timestampString = "549304439.700806"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "fetch(username:password:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Senior_Project_I.LoginViewController.fetch(username: Swift.String, password: Swift.String) -&gt; ()"
+                  moduleName = "Senior Project I"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/LoginViewController.swift"
+                  timestampString = "549284420.3807189"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46"
+                  offsetFromSymbolStart = "2002">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in Senior_Project_I.LoginViewController.fetch(username: Swift.String, password: Swift.String) -&gt; ()"
+                  moduleName = "Senior Project I"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/LoginViewController.swift"
+                  timestampString = "549284420.385102"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "47"
+                  endingLineNumber = "47"
+                  offsetFromSymbolStart = "69">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Senior Project I/RegisterViewController.swift"
+            timestampString = "549306002.069575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "DatePickerClicked(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Senior Project I/RegisterViewController.swift"
+            timestampString = "549306002.069968"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "signUp(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Senior_Project_I.RegisterViewController.signUp(Any) -&gt; ()"
+                  moduleName = "Senior Project I"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/RegisterViewController.swift"
+                  timestampString = "549299449.076522"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "7419">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in Senior_Project_I.RegisterViewController.signUp(Any) -&gt; ()"
+                  moduleName = "Senior Project I"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jarukorn/Downloads/Trax/Senior%20Project%20I/Senior%20Project%20I/RegisterViewController.swift"
+                  timestampString = "549299449.0804369"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "26">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
