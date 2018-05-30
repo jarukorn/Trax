@@ -17,6 +17,7 @@
 		D71237B12061E04500E9CDA7 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71237B02061E04500E9CDA7 /* OverviewViewController.swift */; };
 		D723E61A20624A0C003BFE4E /* DeveloperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723E61920624A0C003BFE4E /* DeveloperTableViewCell.swift */; };
 		D736FB94207C08A100909E0D /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736FB93207C08A100909E0D /* CommentTableViewCell.swift */; };
+		D73C280820BE9A5000F15C2B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73C280720BE9A5000F15C2B /* API.swift */; };
 		D746875D20B6C746009DEE99 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D746875C20B6C746009DEE99 /* LaunchScreenViewController.swift */; };
 		D747AE6D205ECEA7005D1CE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747AE6C205ECEA7005D1CE0 /* AppDelegate.swift */; };
 		D747AE6F205ECEA7005D1CE0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D747AE6E205ECEA7005D1CE0 /* ViewController.swift */; };
@@ -77,6 +78,7 @@
 		D71237B02061E04500E9CDA7 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		D723E61920624A0C003BFE4E /* DeveloperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperTableViewCell.swift; sourceTree = "<group>"; };
 		D736FB93207C08A100909E0D /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		D73C280720BE9A5000F15C2B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		D746875C20B6C746009DEE99 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		D747AE69205ECEA7005D1CE0 /* Senior Project I.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Senior Project I.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D747AE6C205ECEA7005D1CE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 		D7ABB7E9207CAB5300342020 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D73C280720BE9A5000F15C2B /* API.swift */,
 				D7ABB7E7207CAA1200342020 /* ProjectList.swift */,
 				D7ABB7EA207CAB6C00342020 /* TeamMember.swift */,
 				D7A2B0CB208A8F4900D5E0F8 /* C.swift */,
@@ -622,6 +625,7 @@
 				D781686E20850ECB00DB663B /* RegisterViewController.swift in Sources */,
 				D7CCC51A2062613100D97A1A /* TaskTableViewCell.swift in Sources */,
 				D77F9C75205EF4D500EDBF8C /* CompanyCollectionViewCell.swift in Sources */,
+				D73C280820BE9A5000F15C2B /* API.swift in Sources */,
 				D7F8CB41206B7D73001037DF /* BugTableViewCell.swift in Sources */,
 				D7ABB7E8207CAA1200342020 /* ProjectList.swift in Sources */,
 				D7503596206B666D00216FF1 /* DeveloperViewController.swift in Sources */,
