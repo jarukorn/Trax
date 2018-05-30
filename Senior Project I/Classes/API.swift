@@ -9,18 +9,22 @@
 import Foundation
 import Alamofire
 
-let url = URL(string: "https://traxapplication.visualstudio.com/DefaultCollection/")
-let apiVersion = "2.0"
+
 
 struct ProjectFromTFS {
     var id: String?
     var name: String?
 }
 
-func getProjectList(result: @escaping ([ProjectFromTFS]) -> Void) {
-    
+let apiVersion = "2.0"
+
+func getProjectList(accountName: String,token:String,result: @escaping ([ProjectFromTFS]) -> Void) {
+    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/")
     var projectList = [ProjectFromTFS]()
-    let headers: HTTPHeaders = ["Authorization": "Basic Om90dGw1d2xlc2U1dmJwZWV1Y2oyNHJrZnVkYTN5Y3ljdWJ4Zmh6c25qejRzNGxoM3RieWE="]
+    
+    let base64LoginData = get64(token: token)
+    
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
     Alamofire.request("\(url!)_apis/projects?api-version=\(apiVersion)",headers: headers).responseJSON { (response) in
         if (response.result.value != nil) {
             if let json = response.result.value as? [String:AnyObject] {
@@ -42,5 +46,11 @@ func getProjectList(result: @escaping ([ProjectFromTFS]) -> Void) {
     }.resume()
 }
 
-//
-//"\(url)_apis/projects?api-version=\(apiVersion)"
+func get64(token:String) -> String {
+    
+    let loginData = String(format: "%@:%@", "", "\(token)").data(using: String.Encoding.utf8)!
+    let base64LoginData = loginData.base64EncodedString()
+    
+    return base64LoginData
+}
+

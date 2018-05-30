@@ -22,10 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         navigationBarAppearace.barTintColor = #colorLiteral(red: 0, green: 0.5882352941, blue: 1, alpha: 1)
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
-        getProjectList { (result) in
-            print(result[0].id)
+        getProjectList(accountName: "TraxApplication",token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya") { (ProjectList) in
+            print(ProjectList.count)
         }
-        
         return true
     }
 
