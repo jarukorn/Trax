@@ -1941,21 +1941,34 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2go-RC-0lJ">
+                                <rect key="frame" x="30" y="444" width="315" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <state key="normal" title="How to get access token?">
+                                    <color key="titleColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="openAccessTokenGuide:" destination="bT4-Y3-4Eq" eventType="touchUpInside" id="0Bz-ic-J1K"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="znO-nV-nYC" firstAttribute="top" secondItem="67L-3i-aXF" secondAttribute="top" constant="50" id="6MA-Ya-qL5"/>
+                            <constraint firstItem="67L-3i-aXF" firstAttribute="trailing" secondItem="2go-RC-0lJ" secondAttribute="trailing" constant="30" id="7wO-om-YyJ"/>
                             <constraint firstItem="Qq4-61-EHG" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="30" id="ATG-ZW-Wf7"/>
                             <constraint firstItem="kO2-76-FXj" firstAttribute="top" secondItem="znO-nV-nYC" secondAttribute="bottom" constant="30" id="ENm-mx-toN"/>
                             <constraint firstItem="67L-3i-aXF" firstAttribute="trailing" secondItem="vZ0-YS-hd6" secondAttribute="trailing" constant="30" id="Heg-zY-oqC"/>
                             <constraint firstItem="kO2-76-FXj" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="30" id="MBE-Kj-nqe"/>
                             <constraint firstItem="RhP-5O-aDG" firstAttribute="top" secondItem="vZ0-YS-hd6" secondAttribute="bottom" constant="30" id="PU8-Kk-F4E"/>
+                            <constraint firstItem="2go-RC-0lJ" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="30" id="Rgc-LU-o2P"/>
                             <constraint firstItem="67L-3i-aXF" firstAttribute="trailing" secondItem="UlC-ol-ZKl" secondAttribute="trailing" constant="40" id="Two-oD-9XM"/>
                             <constraint firstItem="znO-nV-nYC" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="30" id="cCw-hS-SxU"/>
                             <constraint firstItem="67L-3i-aXF" firstAttribute="trailing" secondItem="znO-nV-nYC" secondAttribute="trailing" constant="30" id="eHz-p8-A76"/>
                             <constraint firstItem="RhP-5O-aDG" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="30" id="hQQ-Yz-LvH"/>
                             <constraint firstItem="vZ0-YS-hd6" firstAttribute="top" secondItem="Qq4-61-EHG" secondAttribute="bottom" constant="30" id="jyh-6I-DbQ"/>
                             <constraint firstItem="67L-3i-aXF" firstAttribute="trailing" secondItem="Qq4-61-EHG" secondAttribute="trailing" constant="30" id="kp1-yk-P5y"/>
+                            <constraint firstItem="2go-RC-0lJ" firstAttribute="top" secondItem="RhP-5O-aDG" secondAttribute="bottom" constant="10" id="m5w-eO-n1f"/>
                             <constraint firstItem="UlC-ol-ZKl" firstAttribute="leading" secondItem="67L-3i-aXF" secondAttribute="leading" constant="40" id="mmW-5U-4M5"/>
                             <constraint firstItem="67L-3i-aXF" firstAttribute="bottom" secondItem="UlC-ol-ZKl" secondAttribute="bottom" constant="50" id="pcm-iz-mWJ"/>
                             <constraint firstItem="Qq4-61-EHG" firstAttribute="top" secondItem="kO2-76-FXj" secondAttribute="bottom" constant="30" id="psw-rv-7nx"/>

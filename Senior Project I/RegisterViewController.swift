@@ -115,6 +115,9 @@ class RegisterViewController: UIViewController {
         datePicker?.show()
     }
     
+    @IBAction func openAccessTokenGuide(_ sender: Any) {
+        UIApplication.shared.open((URL(string: "https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate?view=vsts")!), options: [:], completionHandler: nil)
+    }
     @IBAction func dismissView(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
