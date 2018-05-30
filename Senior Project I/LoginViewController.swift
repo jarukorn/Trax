@@ -35,6 +35,13 @@ class LoginViewController: UIViewController {
     }
     
     func fetch(username:String, password:String) {
+        if (username == "" || password == "") {
+            let alert = UIAlertController(title: "Login Fail", message: "Please enter username and password.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         activityView.startAnimating()
         if !Connectivity.isConnectedToInternet() {
             let alert = UIAlertController(title: "Connection Fail", message: "There is no internet connection.", preferredStyle: .alert)
@@ -64,6 +71,9 @@ class LoginViewController: UIViewController {
                                 if loginAccessAndTask.Role != nil {
                                     let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
                                     accountVc.accountName = loginAccessAndTask.AccountList
+                                    UserDefaults.standard.set(loginAccessAndTask.AccountList, forKey: "accountName")
+                                    
+                                    UserDefaults.standard.set(loginAccessAndTask.AccountList, forKey: "accountList")
                                     let account_nav = UINavigationController(rootViewController: accountVc)
                                     
                                     self.present(account_nav, animated: true, completion: nil)

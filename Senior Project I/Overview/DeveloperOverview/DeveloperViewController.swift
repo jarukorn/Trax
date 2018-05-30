@@ -48,6 +48,7 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let url = "http://traxtfsapi.azurewebsites.net/trax/getworkItemlist?workitemlist=\(dev!.WorkItemIDs!)&userid=\(userID)&accountName=\(accountName!)"
         let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
+        print(safeURL)
         Alamofire.request(safeURL!).responseJSON { (response) in
             do {
                 let workList = try JSONDecoder().decode(WorkItemList.self, from: response.data!)
@@ -94,7 +95,6 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
             }
             
             cell.devPic.image = devImage
-            
             cell.taskTitle.text = taskandBugInstance.WorkItemName
             var temp = ""
             switch taskandBugInstance.Priority {
@@ -110,7 +110,7 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
                 break
             }
             cell.pirorityLabel.text = temp
-            
+            cell.projectName.text = taskandBugInstance.ProjectName
             switch taskandBugInstance.Status {
             case "Closed":
                 cell.statusColorView.backgroundColor = #colorLiteral(red: 0.2316122055, green: 0.7209670544, blue: 0.4477117658, alpha: 1)

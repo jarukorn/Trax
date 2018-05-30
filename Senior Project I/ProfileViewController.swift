@@ -52,8 +52,12 @@ class ProfileViewController: UIViewController {
     @IBAction func switchCompany(_ sender: Any) {
         let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
         let account_nav = UINavigationController(rootViewController: accountVc)
-        accountVc.accountName = UserDefaults.standard.array(forKey: "accountList") as! [String]
-        self.present(account_nav, animated: true, completion: nil)
+        if let temp = UserDefaults.standard.array(forKey: "accountList") as? [String] {
+            accountVc.accountName = temp
+            self.present(account_nav, animated: true, completion: nil)
+        }
+        
+        
     }
     
     

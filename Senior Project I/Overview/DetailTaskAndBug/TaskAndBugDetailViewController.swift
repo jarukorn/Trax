@@ -95,8 +95,34 @@ class TaskAndBugDetailViewController: UIViewController {
         
         taskProfileView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50 + taskCardView.frame.height + 8)
         
+        let role = UserDefaults.standard.string(forKey: "Role")
+        if (role != "CEO" && task?.Status != "Closed") {
+            let button = UIBarButtonItem(image:  #imageLiteral(resourceName: "checked"), landscapeImagePhone: #imageLiteral(resourceName: "checked"), style: UIBarButtonItemStyle.done, target: self, action: #selector(doneTask))
+            navigationItem.rightBarButtonItem = button
+        }
+        
         
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func doneTask() {
+        let alert = UIAlertController(title: "Confirmation", message: "Are you confirm to done this task or bug", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default) { (action) in
+            print("Cancel")
+        })
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.cancel) { (action) in
+            let userid = UserDefaults.standard.integer(forKey: "UserID")
+            let accountName = UserDefaults.standard.string(forKey: "accountName")
+            Alamofire.request("http://traxtfsapi.azurewebsites.net/trax/completeworkitem?userid=\(userid)&accountname=\(accountName!)&witid=\(self.task!.WorkItemID!)").resume()
+            self.navigationController?.popViewController(animated: true)
+            print("Done this task")
+        })
+        
+        
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {

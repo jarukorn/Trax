@@ -63,6 +63,7 @@ struct WorkItem: Decodable {
     var StartDateTime: String?
     var Priority: Int?
     var CommentCount: Int?
+    var ProjectName: String?
     
 }
 

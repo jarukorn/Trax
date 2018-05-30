@@ -16,6 +16,7 @@ class TaskTableViewCell: UITableViewCell {
 //    @IBOutlet weak var colorPirority: UIView!
     @IBOutlet weak var statusColorView: UIView!
     @IBOutlet weak var devPic: UIImageView!
+    @IBOutlet weak var projectName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -14,6 +14,7 @@ class MyTaskViewController: UIViewController {
     var myTask: MyTask?
     var devImage: UIImage?
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+    var projectName :[String] = []
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -29,6 +30,10 @@ class MyTaskViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        fetch()
+    }
+    
     func fetch() {
         activityView.startAnimating()
         let userID = UserDefaults.standard.integer(forKey: "UserID")
@@ -40,6 +45,17 @@ class MyTaskViewController: UIViewController {
             if response.result.isSuccess {
                 do {
                     self.myTask = try JSONDecoder().decode(MyTask.self, from: response.data!)
+                    
+                    
+//
+//                    for i in (self.myTask?.TaskList)! {
+//                        if !projectName.contains(i.ProjectName!) {
+//                            projectName.append(i.ProjectName)
+//                        }
+//                    }
+//
+//                    for
+//
                     self.tableView.reloadData()
                     
                     print("Pass")
@@ -134,6 +150,7 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
 //        } else  if (workitem.Priority == 1) {
 //            cell.colorPirority.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 //        }
+        cell.projectName.text = workitem.ProjectName
         cell.devPic.image = {
             let picData = UserDefaults.standard.string(forKey: "ImageUrl")
             
@@ -166,7 +183,7 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
             vc.task = {
                 let w = myTask?.TaskList?[indexPath.row]
-                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount)
+                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName:w?.ProjectName)
                 return workItem
             }()
             vc.devImage = devImage
@@ -176,7 +193,7 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
             vc.task = {
                 let w = myTask?.BugList?[indexPath.row]
-                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount)
+                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName: w?.ProjectName)
                 return workItem
             }()
             vc.devImage = devImage
