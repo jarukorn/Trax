@@ -15,7 +15,7 @@ let apiVersion = "2.0"
 func getProjectList(){
     let headers: HTTPHeaders = ["Authorization": "Basic Om90dGw1d2xlc2U1dmJwZWV1Y2oyNHJrZnVkYTN5Y3ljdWJ4Zmh6c25qejRzNGxoM3RieWE="]
     Alamofire.request("\(url!)_apis/projects?api-version=\(apiVersion)",headers: headers).responseJSON { (response) in
-        print(response.result.value)
+        print(response.result.value!)
     }
 }
 
