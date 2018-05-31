@@ -57,6 +57,8 @@ class LaunchScreenViewController: UIViewController {
                                 UserDefaults.standard.set(loginAccessAndTask.ImageUrl, forKey: "ImageUrl")
                                 UserDefaults.standard.set(loginAccessAndTask.Email, forKey: "UniqueName")
                                 UserDefaults.standard.set(loginAccessAndTask.Role, forKey: "Role")
+                                UserDefaults.standard.set(loginAccessAndTask.TFS_ID, forKey: "TFS_ID")
+                                UserDefaults.standard.set(loginAccessAndTask.TokenExpireDateTime, forKey: "Expire")
                                 self.activityView.stopAnimating()
                                 if loginAccessAndTask.Role != nil {
                                     let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController

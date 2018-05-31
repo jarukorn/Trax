@@ -22,9 +22,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         navigationBarAppearace.barTintColor = #colorLiteral(red: 0, green: 0.5882352941, blue: 1, alpha: 1)
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
-        getProjectList(accountName: "TraxApplication",token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya") { (ProjectList) in
-            print(ProjectList.count)
-        }
+    
+        getWorkItemNumber(accountName: "TraxApplication", projectName: "Myfirstproject", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", resume: { (workItemList) in
+            var workItemIDStr = ""
+            for i in 0...workItemList.count-1 {
+                workItemIDStr = workItemIDStr + "\(workItemList[i])"
+                if (i != workItemList.count-1) {
+                    workItemIDStr = workItemIDStr + ","
+                }
+            }
+            print(workItemIDStr)
+            getTaskFromWorkItemID(token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", id: workItemIDStr, accountName: "TraxApplication", resume: { (workItems) in
+                getComment(accountName: "TraxApplication", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", tasks: workItems, resume: { (FinishWorkItemList) in
+                    print(FinishWorkItemList[0].comment?.count)
+                })
+                
+            })
+        })
+        
+        
         return true
     }
 
