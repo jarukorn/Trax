@@ -66,6 +66,7 @@ class LoginViewController: UIViewController {
                                 UserDefaults.standard.set(loginAccessAndTask.Email, forKey: "UniqueName")
                                 UserDefaults.standard.set(loginAccessAndTask.Role, forKey: "Role")
                                 UserDefaults.standard.set(loginAccessAndTask.TFS_ID, forKey: "TFS_ID")
+                                UserDefaults.standard.set(loginAccessAndTask.Token, forKey: "Token")
                                 UserDefaults.standard.set(loginAccessAndTask.TokenExpireDateTime, forKey: "Expire")
                                 UserDefaults.standard.set(username, forKey: "Username")
                                 UserDefaults.standard.set(password, forKey: "Password")

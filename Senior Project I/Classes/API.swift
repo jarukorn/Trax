@@ -8,15 +8,70 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 
 struct ProjectFromTFS {
     var id: String?
     var name: String?
+    var task: [WorkItemFromTFS]?
+    var teamList: [TeamMemberTFS]?
+    var taskProgress = TaskProgress()
+}
+
+struct TaskProgress {
+    var complete = 0
+    var doing = 0
+    var new = 0
 }
 
 struct Account {
     var id: String?
     var name: String?
+}
+
+struct TeamMemberTFS {
+    var name:String
+    var imageURL: String
+    var image: UIImage?
+}
+
+struct WorkItemFromTFS {
+    var ID: Int?
+    var type: String?
+    var title: String?
+    var description: String?
+    var assignedTo: String?
+    var state: String?
+    var createdDate: String?
+    var createBy: String?
+    var priority: Int?
+    var projectName: String?
+    var comment: [CommentFromTFS]?
+    
+    var stateValue: Int {
+        if state == "New" {
+            return 0
+        } else if state == "To Do" {
+            return 1
+        } else if state == "Active" {
+            return 2
+        } else if state == "In Progress" {
+            return 3
+        } else if state == "Done" {
+            return 4
+        } else if state == "Closed" {
+            return 5
+        }
+        return 10
+    }
+    
+}
+
+struct CommentFromTFS {
+    var commenterName: String?
+    var description: String?
+    var imageURL: String?
+    var CreatedDateTime: String?
 }
 
 let apiVersion = "2.0"
@@ -43,7 +98,7 @@ func getProjectList(accountName: String,token:String,result: @escaping ([Project
                 for obj in value! {
                     let id = obj["id"] as? String
                     let name = obj["name"] as? String
-                    let projectTemp = ProjectFromTFS(id: id, name: name)
+                    let projectTemp = ProjectFromTFS(id: id, name: name, task: [WorkItemFromTFS](), teamList: [TeamMemberTFS](), taskProgress: TaskProgress())
                     projectList.append(projectTemp)
                 }
                 result(projectList)
@@ -57,29 +112,6 @@ func getProjectList(accountName: String,token:String,result: @escaping ([Project
     }.resume()
 }
 
-
-//Not Use
-func getAccountList(tfs_id: String, token: String, resume: @escaping ([Account]) -> Void)  {
-    
-    let base64LoginData = get64(token: token)
-    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
-    
-    Alamofire.request("https://app.vssps.visualstudio.com/_apis/Accounts?memberId=\(tfs_id)&api-version=3.2-preview",headers: headers).responseJSON { (response) in
-        var accountList = [Account]()
-        if let json = response.result.value as? [String:AnyObject] {
-            if let value = json["value"] as? [[String:AnyObject]] {
-                for account in value {
-                    let accountID = account["accountId"] as? String
-                    let accountName = account["accountName"] as? String
-                    let accountTemp = Account(id: accountID, name: accountName)
-                    accountList.append(accountTemp)
-                }
-                resume(accountList)
-            }
-        }
-    }
-}
-
 func getWorkItemNumber(accountName: String, projectName: String,token : String, resume: @escaping ([Int]) -> Void) {
     let url = "https://\(accountName).visualstudio.com/DefaultCollection/\(projectName)/_apis/wit/wiql?api-version=1.0"
     print(url)
@@ -89,7 +121,7 @@ func getWorkItemNumber(accountName: String, projectName: String,token : String, 
     let pjson =
     """
  {
-  "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task' and [System.TeamProject] = 'myfirstproject' or [System.WorkItemType] = 'Bug' and [System.TeamProject] = 'myfirstproject' "
+  "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task' and [System.TeamProject] = '\(projectName)' or [System.WorkItemType] = 'Bug' and [System.TeamProject] = '\(projectName)' "
     }
 """
     let data = (pjson.data(using: .utf8))! as Data
@@ -114,26 +146,7 @@ func getWorkItemNumber(accountName: String, projectName: String,token : String, 
     }
 }
 
-struct WorkItemFromTFS {
-    var ID: Int?
-    var type: String?
-    var title: String?
-    var description: String?
-    var assignedTo: String?
-    var state: String?
-    var createdDate: String?
-    var createBy: String?
-    var priority: Int?
-    var projectName: String?
-    var comment: [CommentFromTFS]?
-}
 
-struct CommentFromTFS {
-    var commenterName: String?
-    var description: String?
-    var imageURL: String?
-    var CreatedDateTime: String?
-}
 
 func getTaskFromWorkItemID(token: String, id: String, accountName: String,resume: @escaping ([WorkItemFromTFS]) -> Void) {
     let base64LoginData = get64(token: token)
@@ -155,7 +168,9 @@ func getTaskFromWorkItemID(token: String, id: String, accountName: String,resume
                         let description = fields["System.Description"] as? String
                         let createBy = fields["System.CreatedBy"] as? String
                         let priority = fields["Microsoft.VSTS.Common.Priority"] as? Int
+                        
                         let workItemTemp = WorkItemFromTFS(ID: id, type: workItemType, title: title, description: description, assignedTo: assignTo, state: state, createdDate: createDate, createBy: createBy, priority: priority, projectName: projectName, comment: [CommentFromTFS]())
+                        
                         workItemList.append(workItemTemp)
                     }
                 }
@@ -163,35 +178,153 @@ func getTaskFromWorkItemID(token: String, id: String, accountName: String,resume
                 resume(workItemList)
             }
         }
-    }
+    }.resume()
 }
 
-// Fixing
-func getComment(accountName:String, token:String, tasks: [WorkItemFromTFS], resume: @escaping ([WorkItemFromTFS]) -> Void) {
+func getComment(accountName:String, token:String, task: WorkItemFromTFS, resume: @escaping ([CommentFromTFS]) -> Void) {
     let base64LoginData = get64(token: token)
     let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
-    var workitemList = tasks
-    
-    for i in 0...tasks.count-1 {
-        Alamofire.request("https://\(accountName).visualstudio.com/DefaultCollection/_apis/wit/workItems/\(tasks[i].ID!)/comments",headers: headers).responseJSON { (response) in
-            var commentList = [CommentFromTFS]()
-            if let json = response.result.value as? [String:AnyObject] {
-                if let comments = json["comments"] as? [[String:AnyObject]] {
-                    for comment in comments {
-                        if let revisedBy = comment["revisedBy"] as? [String:AnyObject] {
-                            let description = comment["text"] as? String
-                            let commenterName = revisedBy["displayName"] as? String
-                            let imageURL = revisedBy["imageUrl"] as? String
-                            let createDate = comment["revisedDate"] as? String
-                            let commentTemp = CommentFromTFS(commenterName: commenterName, description: description, imageURL: imageURL, CreatedDateTime: createDate)
-                            commentList.append(commentTemp)
-                        }
+    let group = DispatchGroup()
+    Alamofire.request("https://\(accountName).visualstudio.com/DefaultCollection/_apis/wit/workItems/\(task.ID!)/comments",headers: headers).responseJSON { (response) in
+        group.enter()
+        print("https://\(accountName).visualstudio.com/DefaultCollection/_apis/wit/workItems/\(task.ID!)/comments")
+        if let json = response.result.value as? [String:AnyObject] {
+            if let comments = json["comments"] as? [[String:AnyObject]] {
+                var commentList = [CommentFromTFS]()
+                for comment in comments {
+                    if let revisedBy = comment["revisedBy"] as? [String:AnyObject] {
+                        let description = comment["text"] as? String
+                        let commenterName = revisedBy["displayName"] as? String
+                        let imageURL = revisedBy["imageUrl"] as? String
+                        let createDate = comment["revisedDate"] as? String
+                        let commentTemp = CommentFromTFS(commenterName: commenterName, description: description, imageURL: imageURL, CreatedDateTime: createDate)
+                        commentList.append(commentTemp)
                     }
-                    workitemList[i].comment = commentList
                 }
+                resume(commentList)
             }
+        }
+        
         }.resume()
-    }
-   resume(workitemList)
 }
 
+
+func completeWorkItem(accountName: String, token: String,witID: Int, result: @escaping (Bool) -> Void) {
+    let urltfs = "https://\(accountName).visualstudio.com/_apis/wit/workitems/\(witID)?api-version=\(apiVersion)"
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)", "Content-Type": "application/json-patch+json"]
+    let json = """
+    [ { "op": "add",
+        "path": "/fields/System.State",
+        "value": "Closed" } ]
+    """
+    let url = URL(string: urltfs)!
+    let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
+    var request = URLRequest(url: url)
+    request.allHTTPHeaderFields = headers
+    request.httpMethod = "PATCH"
+    request.setValue("application/json-patch+json", forHTTPHeaderField: "Content-Type")
+    request.httpBody = jsonData
+    Alamofire.request(request).responseJSON{(response) in
+        if (response.result.value != nil) {
+            if let json = response.result.value as? [String:AnyObject] {
+                if let value = json["fields"] as? [String:AnyObject] {
+                    let state = value["System.State"] as? String
+                    
+                    if (state == "Closed") {
+                        result(true)
+                    } else {
+                        result(false)
+                    }
+                }
+            } else {
+                
+            }
+        } else {
+            
+        }
+    }
+}
+
+func getTeamMember(accountName: String, token: String, projectID: String, teamID:String, result: @escaping ([TeamMemberTFS]) -> Void ) {
+    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/_apis/projects/\(projectID)/teams/\(teamID)/members?")
+    var teamMemberList = [TeamMemberTFS]()
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    Alamofire.request("\(url!)api-version=\(apiVersion)", headers:headers).responseJSON { (response) in
+        if (response.result.value != nil) {
+            if let json = response.result.value as? [String:AnyObject] {
+                let value = json["value"] as? [[String:AnyObject]]
+                for obj in value! {
+                    let name = obj["displayName"] as? String
+                    let image = obj["imageUrl"] as? String
+                    let member = TeamMemberTFS(name: name!, imageURL:image!, image: nil)
+                    teamMemberList.append(member)
+                }
+                result(teamMemberList)
+            } else {
+                
+            }
+        } else {
+            
+        }
+        }.resume()
+}
+
+func getImage(imageUrl: String,token: String, result: @escaping (UIImage) -> Void) {
+    let url = URL(string: imageUrl)
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    var tfs = UIImage()
+    Alamofire.request(url!, method:.get, headers: headers).responseImage { response in
+        
+        if let image = response.result.value {
+            tfs = image
+        } else {
+            tfs = #imageLiteral(resourceName: "user")
+        }
+        
+        result(tfs)
+    }.resume()
+}
+
+func getTeamID(accountName: String,token:String,projectID:String,result: @escaping (String) -> Void)  {
+    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/_apis/projects/\(projectID)/teams?")
+    let base64LoginData = get64(token: token)
+    let headers : HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    print(url!)
+    Alamofire.request("\(url!)api-version=\(apiVersion)", headers: headers).responseJSON { (response) in
+        if (response.result.value != nil) {
+            if let json = response.result.value as? [String:AnyObject] {
+                if let value = json["value"] as? [[String:AnyObject]] {
+                    let value1 = value[0]
+                    let teamID = value1["id"] as? String
+                    result(teamID!)
+                }
+            }
+        }
+        }.resume()
+}
+
+
+//Not Use
+func getAccountList(tfs_id: String, token: String, resume: @escaping ([Account]) -> Void)  {
+    
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    
+    Alamofire.request("https://app.vssps.visualstudio.com/_apis/Accounts?memberId=\(tfs_id)&api-version=3.2-preview",headers: headers).responseJSON { (response) in
+        var accountList = [Account]()
+        if let json = response.result.value as? [String:AnyObject] {
+            if let value = json["value"] as? [[String:AnyObject]] {
+                for account in value {
+                    let accountID = account["accountId"] as? String
+                    let accountName = account["accountName"] as? String
+                    let accountTemp = Account(id: accountID, name: accountName)
+                    accountList.append(accountTemp)
+                }
+                resume(accountList)
+            }
+        }
+    }
+}

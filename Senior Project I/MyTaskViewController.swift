@@ -26,8 +26,7 @@ class MyTaskViewController: UIViewController {
         activityView.startAnimating()
         activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
-        fetch()
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,17 +44,6 @@ class MyTaskViewController: UIViewController {
             if response.result.isSuccess {
                 do {
                     self.myTask = try JSONDecoder().decode(MyTask.self, from: response.data!)
-                    
-                    
-//
-//                    for i in (self.myTask?.TaskList)! {
-//                        if !projectName.contains(i.ProjectName!) {
-//                            projectName.append(i.ProjectName)
-//                        }
-//                    }
-//
-//                    for
-//
                     self.tableView.reloadData()
                     
                     print("Pass")
@@ -151,18 +139,19 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
 //            cell.colorPirority.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 //        }
         cell.projectName.text = workitem.ProjectName
-        cell.devPic.image = {
-            let picData = UserDefaults.standard.string(forKey: "ImageUrl")
-            
-            if let decodedData = Data(base64Encoded: picData!, options: .ignoreUnknownCharacters) {
-                let image = UIImage(data: decodedData)
-                self.devImage = image
-                return image
-            } else {
-                self.devImage = #imageLiteral(resourceName: "user")
-                return #imageLiteral(resourceName: "user")
-            }
-        }()
+//        cell.devPic.image = {
+//            let picData = UserDefaults.standard.string(forKey: "ImageUrl")
+//
+//            if let decodedData = Data(base64Encoded: picData!, options: .ignoreUnknownCharacters) {
+//                let image = UIImage(data: decodedData)
+//                self.devImage = image
+//                return image
+//            } else {
+//                self.devImage = #imageLiteral(resourceName: "user")
+//                return #imageLiteral(resourceName: "user")
+//            }
+//        }()
+//        cell.assignToLabel.text = "\(workitem.)"
         cell.numberCommentLabel.text = "\(workitem.CommentCount!)"
         var startDate = ""
         if let date = workitem.StartDateTime {
@@ -177,33 +166,33 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
         return 88
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch segmentControl.selectedSegmentIndex {
-        case 0:
-            let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
-            vc.task = {
-                let w = myTask?.TaskList?[indexPath.row]
-                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName:w?.ProjectName)
-                return workItem
-            }()
-            vc.devImage = devImage
-            vc.navigationItem.title = "Task Detail"
-            navigationController?.pushViewController(vc, animated: true)
-        case 1:
-            let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
-            vc.task = {
-                let w = myTask?.BugList?[indexPath.row]
-                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName: w?.ProjectName)
-                return workItem
-            }()
-            vc.devImage = devImage
-            vc.navigationItem.title = "Bug Detail"
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            break
-        }
-        
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        switch segmentControl.selectedSegmentIndex {
+//        case 0:
+//            let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
+//            vc.task = {
+//                let w = myTask?.TaskList?[indexPath.row]
+//                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName:w?.ProjectName)
+//                return workItem
+//            }()
+//            vc.devImage = devImage
+//            vc.navigationItem.title = "Task Detail"
+//            navigationController?.pushViewController(vc, animated: true)
+//        case 1:
+//            let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
+//            vc.task = {
+//                let w = myTask?.BugList?[indexPath.row]
+//                let workItem = WorkItem(WorkItemID: w?.WorkItemID, WorkItemType: w?.WorkItemType, WorkItemName: w?.WorkItemName, Description: w?.Description, MemberName: w?.MemberName, Status: w?.Status, StartDateTime: w?.StartDateTime, Priority: w?.Priority, CommentCount: w?.CommentCount, ProjectName: w?.ProjectName)
+//                return workItem
+//            }()
+//            vc.devImage = devImage
+//            vc.navigationItem.title = "Bug Detail"
+//            navigationController?.pushViewController(vc, animated: true)
+//        default:
+//            break
+//        }
+//        
+//    }
     
     
 }

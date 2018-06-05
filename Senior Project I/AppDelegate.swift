@@ -22,25 +22,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearace.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         navigationBarAppearace.barTintColor = #colorLiteral(red: 0, green: 0.5882352941, blue: 1, alpha: 1)
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
-    
-        getWorkItemNumber(accountName: "TraxApplication", projectName: "Myfirstproject", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", resume: { (workItemList) in
-            var workItemIDStr = ""
-            for i in 0...workItemList.count-1 {
-                workItemIDStr = workItemIDStr + "\(workItemList[i])"
-                if (i != workItemList.count-1) {
-                    workItemIDStr = workItemIDStr + ","
-                }
-            }
-            print(workItemIDStr)
-            getTaskFromWorkItemID(token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", id: workItemIDStr, accountName: "TraxApplication", resume: { (workItems) in
-                getComment(accountName: "TraxApplication", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", tasks: workItems, resume: { (FinishWorkItemList) in
-                    print(FinishWorkItemList[0].comment?.count)
-                })
-                
-            })
-        })
         
-        
+//        let myGroup = DispatchGroup()
+//        var projectListFinal = [ProjectFromTFS]()
+//        var workItem = [WorkItemFromTFS]()
+//        myGroup.enter()
+//        
+//        getProjectList(accountName: "TraxApplication", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya") { (projectList) in
+//            print(projectList.count)
+//            
+//            for i in 0...projectList.count-1 {
+//                var projectEach = ProjectFromTFS()
+//                projectEach.id = projectList[i].id
+//                projectEach.name = projectList[i].name
+//                getWorkItemNumber(accountName: "TraxApplication", projectName: projectList[i].name!, token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", resume: { (workItemList) in
+//                    
+//                    var workItemIDStr = ""
+//                    for i in 0...workItemList.count-1 {
+//                        workItemIDStr = workItemIDStr + "\(workItemList[i])"
+//                        if (i != workItemList.count-1) {
+//                            workItemIDStr = workItemIDStr + ","
+//                        }
+//                    }
+//                    print(workItemIDStr)
+//                    getTaskFromWorkItemID(token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", id: workItemIDStr, accountName: "TraxApplication", resume: { (workItems) in
+//                        getComment(accountName: "TraxApplication", token: "ottl5wlese5vbpeeucj24rkfuda3ycycubxfhzsnjz4s4lh3tbya", tasks: workItems, resume: { (FinishWorkItemList) in
+//                            workItem = FinishWorkItemList
+//                            projectEach.task = workItem
+//                            projectListFinal.append(projectEach)
+//                            if i == projectList.count-1 {
+//                                myGroup.leave()
+//                            }
+//                        })
+//                        
+//                    })
+//                })
+//                
+//                
+//            }
+//            myGroup.notify(queue: DispatchQueue.main, execute: {
+//                print(projectListFinal.count)
+//            })
+//        }
+//        
         return true
     }
 

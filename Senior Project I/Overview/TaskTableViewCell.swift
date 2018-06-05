@@ -15,8 +15,10 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
 //    @IBOutlet weak var colorPirority: UIView!
     @IBOutlet weak var statusColorView: UIView!
-    @IBOutlet weak var devPic: UIImageView!
+//    @IBOutlet weak var devPic: UIImageView!
     @IBOutlet weak var projectName: UILabel!
+    @IBOutlet weak var assignToLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

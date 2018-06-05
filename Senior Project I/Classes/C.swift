@@ -8,19 +8,19 @@
 
 import Foundation
 
-struct Project: Decodable {
-    var ProjectName: String?
-    var TaskProgress: TaskProgress?
-    var TeamMembers: TeamMembers?
-}
+//struct Project: Decodable {
+//    var ProjectName: String?
+//    var TaskProgress: TaskProgress?
+//    var TeamMembers: TeamMembers?
+//}
 
-struct TaskProgress : Decodable {
-    var DueTask: Int?
-    var DoingTask: Int?
-    var DoneTask: Int?
-    var WorkItemList: String?
-
-}
+//struct TaskProgress : Decodable {
+//    var DueTask: Int?
+//    var DoingTask: Int?
+//    var DoneTask: Int?
+//    var WorkItemList: String?
+//
+//}
 
 struct TeamMembers : Decodable {
     var Count: String?
@@ -84,14 +84,14 @@ struct LoginAccessAndMyTask : Decodable {
     let Role : String?
     let TokenExpireDateTime : String?
     let AccountList : [String]?
-    
+    let Token : String?
 }
-
-struct MyDeveloperList: Decodable {
-    var DisplayName: String?
-    var ImageUrl: String?
-    var TaskProgress: TaskProgress?
-}
+//
+//struct MyDeveloperList: Decodable {
+//    var DisplayName: String?
+//    var ImageUrl: String?
+//    var TaskProgress: TaskProgress?
+//}
 
 struct MyTask: Decodable {
     var Done: Int?

@@ -15,7 +15,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var tableView: UITableView!
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     var accountName: String?
-    var projects : [Project]?
+    var projectListFinal = [ProjectFromTFS]()
     
     
     override func viewDidLoad() {
@@ -29,6 +29,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
         
         accountName = UserDefaults.standard.string(forKey: "accountName")
         fetch()
+
         if (accountName != nil) {
             navigationItem.title = accountName!
         } else {
@@ -41,23 +42,59 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func fetch() {
-        
-        let userID = UserDefaults.standard.integer(forKey: "UserID")
-        let accountName = UserDefaults.standard.string(forKey: "accountName")
-        let url = "http://traxtfsapi.azurewebsites.net/trax/getprojectlist?userid=\(userID)&accountname=\(accountName!)"
-        let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
-        print(safeURL!)
-        Alamofire.request(safeURL!).responseJSON { (response) in
-            do {
-                let projectList = try JSONDecoder().decode([Project].self, from: response.data!)
-                self.projects = projectList
-                print("pass")
-                self.tableView.reloadData()
-                self.activityView.stopAnimating()
-            } catch {
-                print("error")
+        let token = UserDefaults.standard.string(forKey: "Token")
+        print(token!)
+        var interation = 0
+        getProjectList(accountName: self.accountName!, token: token!) { (projectList) in
+            
+            self.projectListFinal = projectList
+            
+            for i in 0...self.projectListFinal.count-1 {
+                getWorkItemNumber(accountName: self.accountName!, projectName: self.projectListFinal[i].name!, token: token!, resume: { (workItemArray) in
+                    var workItemStr = ""
+                    print(workItemArray.count)
+                    if workItemArray.count != 0 {
+                        for j in 0...workItemArray.count-1 {
+                            workItemStr = workItemStr + "\(workItemArray[j])"
+                            if (j != workItemArray.count-1) {
+                                workItemStr = workItemStr + ","
+                            }
+                        }
+                        
+                        getTaskFromWorkItemID(token: token!, id: workItemStr, accountName: self.accountName!, resume: { (workItems) in
+                            self.projectListFinal[i].task = workItems
+                        })
+                        
+                        getTeamID(accountName: self.accountName!, token: token!, projectID: projectList[i].id! , result: { (teamID) in
+                            getTeamMember(accountName: self.accountName!, token: token!, projectID: projectList[i].id!, teamID: teamID, result: { (TeamMemberTemp) in
+                                self.projectListFinal[i].teamList = TeamMemberTemp
+                                for k in 0...TeamMemberTemp.count-1 {
+                                    DispatchQueue.main.async(execute: {
+                                        getImage(imageUrl: TeamMemberTemp[k].imageURL, token: token!, result: { (Image) in
+                                            self.projectListFinal[i].teamList![k].image = Image
+                                            interation = interation + 1
+                                            if interation == self.projectListFinal.count-1 {
+                                                DispatchQueue.main.async(execute: {
+                                                    sleep(1)
+                                                    self.tableView.reloadData()
+                                                    self.activityView.stopAnimating()
+                                                })
+                                            }
+                                           
+                                            
+
+                                        })
+                                    })
+                                   
+                                }
+                            })
+                        })
+                    } else {
+                        print("No work item.")
+                    }
+                })
             }
-        }.resume()
+        }
     }
   
     
@@ -68,78 +105,112 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return projects?.count ?? 0
+        return projectListFinal.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as! ProjectTableViewCell
         
-        if let project = projects?[indexPath.row] {
-            cell.selectionStyle = .none
-            cell.projectName.text = project.ProjectName! + " Project"
-            if let taskProgress = project.TaskProgress {
-                cell.inCompleteLabel.text = "\(taskProgress.DueTask!) New"
-                cell.inProgressLabel.text = "\(taskProgress.DoingTask!) Doing"
-                cell.completeLabel.text = "\(taskProgress.DoneTask!) Done"
-                DispatchQueue.main.async {
-                    let chart = VBPieChart()
-                    chart.holeRadiusPrecent = 0
-                    cell.graphView.addSubview(chart)
-                    chart.frame = CGRect(x: 0 , y: 50, width: 240*0.7, height: 180*0.7)
-                    let chartValues = [ ["name":"first", "value": taskProgress.DoneTask ?? 0, "color":UIColor(hexString:"#33AD5F")],
-                                        ["name":"second", "value": taskProgress.DueTask ?? 0, "color":UIColor(hexString:"#808080")],
-                                        ["name":"third", "value": taskProgress.DoingTask ?? 0, "color":UIColor(hexString:"#FECA5D")]]
-                    chart.setChartValues(chartValues as [AnyObject], animation:false)
-                }
-            }
-            var imageList = [UIImage?]()
-            
-            if let teamMemberList = project.TeamMembers?.Value {
-                for member in teamMemberList {
-                    if let decodedData = Data(base64Encoded: member.ImageUrl!, options: .ignoreUnknownCharacters) {
-                        let image = UIImage(data: decodedData)
-                        imageList.append(image)
-                    } else {
-                        imageList.append(nil)
-                    }
-                }
-                
-                if (imageList.count > 4) {
-                    cell.managerImageView.image = imageList[0]
-                    cell.dev1ImageView.image = imageList[1]
-                    cell.dev2ImageView.image = imageList[2]
-                    cell.dev3ImageView.image = #imageLiteral(resourceName: "Plus")
-                } else {
-                    switch imageList.count {
-                    case 1:
-                        cell.managerImageView.image = imageList[0]
-                        cell.dev1ImageView.image = nil
-                        cell.dev2ImageView.image = nil
-                        cell.dev3ImageView.image = nil
-                    case 2:
-                        cell.managerImageView.image = imageList[0]
-                        cell.dev1ImageView.image = imageList[1]
-                        cell.dev2ImageView.image = nil
-                        cell.dev3ImageView.image = nil
-                    case 3:
-                        cell.managerImageView.image = imageList[0]
-                        cell.dev1ImageView.image = imageList[1]
-                        cell.dev2ImageView.image = imageList[2]
-                        cell.dev3ImageView.image = nil
-                    case 4:
-                        cell.managerImageView.image = imageList[0]
-                        cell.dev1ImageView.image = imageList[1]
-                        cell.dev2ImageView.image = imageList[2]
-                        cell.dev3ImageView.image = imageList[3]
-                    default:
-                        break
-                    }
-                    
-                }
-                
-            }
+        var project = projectListFinal[indexPath.row]
+        cell.selectionStyle = .none
+        cell.projectName.text = project.name! + " Project"
+        var complete = 0
+        var doing = 0
+        var new = 0
         
+        for task in project.task! {
+            switch task.state {
+            case "Done":
+                complete = complete + 1
+            case "Closed":
+                complete = complete + 1
+            case "In Progress":
+                doing = doing + 1
+            case "Active":
+                doing = doing + 1
+            case "To Do":
+                new = new + 1
+            case "New":
+                new = new + 1
+            case .some(_):
+                break
+            default:
+                break
+            }
         }
+        
+        project.taskProgress.complete = complete
+        project.taskProgress.doing = doing
+        project.taskProgress.new = new
+        self.projectListFinal[indexPath.row].taskProgress = project.taskProgress
+        cell.inCompleteLabel.text = "\(new) New"
+        cell.inProgressLabel.text = "\(doing) Doing"
+        cell.completeLabel.text = "\(complete) Done"
+        let chart = VBPieChart()
+        chart.holeRadiusPrecent = 0
+        cell.graphView.addSubview(chart)
+        if (complete == 0 && doing == 0 && new == 0) {
+            chart.frame = CGRect(x: 0 , y: 50, width: 240*0.7, height: 180*0.7)
+            let chartValues = [ ["name":"first", "value": 0, "color":UIColor(hexString:"#33AD5F")],
+                                ["name":"second", "value": 10, "color":UIColor(hexString:"#808080")],
+                                ["name":"third", "value": 0, "color":UIColor(hexString:"#FECA5D")]]
+            chart.setChartValues(chartValues as [AnyObject], animation:false)
+        } else {
+            chart.frame = CGRect(x: 0 , y: 50, width: 240*0.7, height: 180*0.7)
+            let chartValues = [ ["name":"first", "value": complete, "color":UIColor(hexString:"#33AD5F")],
+                                ["name":"second", "value": new, "color":UIColor(hexString:"#808080")],
+                                ["name":"third", "value": doing, "color":UIColor(hexString:"#FECA5D")]]
+            chart.setChartValues(chartValues as [AnyObject], animation:false)
+            
+        }
+        
+        if (complete == 0 && doing == 0 && new == 0) {
+            cell.managerImageView.image = nil
+            cell.dev1ImageView.image = nil
+            cell.dev2ImageView.image = nil
+            cell.dev3ImageView.image = nil
+        } else {
+            if (self.projectListFinal[indexPath.row].teamList?.count)! > 4 {
+                cell.managerImageView.image = projectListFinal[indexPath.row].teamList?[0].image
+                cell.dev1ImageView.image = projectListFinal[indexPath.row].teamList?[1].image
+                cell.dev2ImageView.image = projectListFinal[indexPath.row].teamList?[2].image
+                cell.dev3ImageView.image = #imageLiteral(resourceName: "Plus")
+                if (cell.managerImageView.image == nil || cell.dev1ImageView.image == nil || cell.dev2ImageView.image == nil || cell.dev3ImageView.image == nil) {
+                    tableView.reloadData()
+                }
+            } else {
+                switch (self.projectListFinal[indexPath.row].teamList?.count)! {
+                case 1:
+                    cell.managerImageView.image = projectListFinal[indexPath.row].teamList?[0].image
+                    cell.dev1ImageView.image = nil
+                    cell.dev2ImageView.image = nil
+                    cell.dev3ImageView.image = nil
+                case 2:
+                    cell.managerImageView.image = projectListFinal[indexPath.row].teamList?[0].image
+                    cell.dev1ImageView.image = projectListFinal[indexPath.row].teamList?[1].image
+                    cell.dev2ImageView.image = nil
+                    cell.dev3ImageView.image = nil
+                case 3:
+                    cell.managerImageView.image = projectListFinal[indexPath.row].teamList?[0].image
+                    cell.dev1ImageView.image = projectListFinal[indexPath.row].teamList?[1].image
+                    cell.dev2ImageView.image = projectListFinal[indexPath.row].teamList?[2].image
+                    cell.dev3ImageView.image = nil
+                case 4:
+                    cell.managerImageView.image = projectListFinal[indexPath.row].teamList?[0].image
+                    cell.dev1ImageView.image = projectListFinal[indexPath.row].teamList?[1].image
+                    cell.dev2ImageView.image = projectListFinal[indexPath.row].teamList?[2].image
+                    cell.dev3ImageView.image = projectListFinal[indexPath.row].teamList?[3].image
+                default:
+                    break
+                }
+            }
+        }
+        
+        
+        
+       
+       
+
         
         return cell
         
@@ -151,11 +222,11 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextScreen = storyboard?.instantiateViewController(withIdentifier: "overview_vc") as! OverviewViewController
-        nextScreen.workItemList = projects?[indexPath.row].TaskProgress?.WorkItemList
-        nextScreen.teamMembers =  projects?[indexPath.row].TeamMembers
-        nextScreen.projectName = projects?[indexPath.row].ProjectName
+        nextScreen.project = self.projectListFinal[indexPath.row]
         navigationController?.pushViewController(nextScreen, animated: true)
     }
     
 }
+
+
 

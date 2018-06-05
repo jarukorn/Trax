@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 class DeveloperViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    
     @IBOutlet weak var tableViewList: UITableView!
     @IBOutlet weak var devImageView: UIImageView!
     @IBOutlet weak var devNameLabel: UILabel!
@@ -18,10 +17,8 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var doingLabel: UILabel!
     @IBOutlet weak var leftLabel: UILabel!
-
-    var dev : Developer?
-    var devImage : UIImage?
-    var workList: WorkItemList?
+    
+    var dev : MemberTaskInformation?
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     override func viewDidLoad() {
@@ -30,36 +27,45 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         activityView.hidesWhenStopped = true
         activityView.center = self.tableViewList.center
-        view.addSubview(activityView)
         activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-        devNameLabel.text = dev!.DisplayName ?? ""
-        devImageView.image = devImage
-        doneLabel.text = "\(dev?.Done ?? 0)"
-        doingLabel.text = "\(dev?.Doing ?? 0)"
-        leftLabel.text = "\(dev?.Due ?? 0)"
-        if (dev?.WorkItemIDs != nil) {
-            fetch()
-        }
-    }
-    
-    func fetch() {
         activityView.startAnimating()
-        let userID = UserDefaults.standard.integer(forKey: "UserID")
+        
+        devNameLabel.text = dev?.teamMember?.name
+        devImageView.image = dev?.teamMember?.image
+        doneLabel.text = "\(dev!.taskProgress.complete)"
+        doingLabel.text = "\(dev!.taskProgress.doing)"
+        leftLabel.text = "\(dev!.taskProgress.new)"
+        
         let accountName = UserDefaults.standard.string(forKey: "accountName")
-        let url = "http://traxtfsapi.azurewebsites.net/trax/getworkItemlist?workitemlist=\(dev!.WorkItemIDs!)&userid=\(userID)&accountName=\(accountName!)"
-        let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
-        print(safeURL)
-        Alamofire.request(safeURL!).responseJSON { (response) in
-            do {
-                let workList = try JSONDecoder().decode(WorkItemList.self, from: response.data!)
-                self.workList = workList
-                print("pass")
-                self.tableViewList.reloadData()
-                self.activityView.stopAnimating()
-            } catch {
-                print("error")
+        let token = UserDefaults.standard.string(forKey: "Token")
+        
+        if dev?.task?.count != 0 {
+            for i in 0...(dev?.task?.count)!-1 {
+                var interation = 0
+                getComment(accountName: accountName!, token: token!, task: (dev?.task![i])!) { (CommentList) in
+                    self.dev?.task![i].comment = CommentList
+                    interation = interation + 1
+                    if (interation == self.dev!.task!.count-1) {
+                        self.tableViewList.reloadData()
+                    }
+                }
             }
         }
+        
+        if dev?.bug?.count != 0 {
+            for i in 0...(dev?.bug?.count)!-1 {
+                var interation = 0
+                getComment(accountName: accountName!, token: token!, task: (dev?.bug![i])!) { (CommentList) in
+                    self.dev?.bug![i].comment = CommentList
+                    interation = interation + 1
+                    if (interation == self.dev!.bug!.count-1) {
+                        self.tableViewList.reloadData()
+                    }
+                }
+            }
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,34 +76,37 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentControl.selectedSegmentIndex {
         case 0:
-            return workList?.TaskList?.count ?? 0
+            return dev?.task!.count ?? 0
         case 1:
-            return workList?.BugList?.count ?? 0
+            return dev?.bug!.count ?? 0
         default:
             return 0
         }
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskcell") as! TaskTableViewCell
         switch segmentControl.selectedSegmentIndex {
         case 0,1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "taskcell", for: indexPath) as! TaskTableViewCell
             cell.selectionStyle = .none
-            var taskandBugInstance = WorkItem()
+            var taskandBugInstance = WorkItemFromTFS()
             switch segmentControl.selectedSegmentIndex {
             case 0:
-                taskandBugInstance = (workList?.TaskList![indexPath.row])!
+                taskandBugInstance = (dev!.task![indexPath.row])
             case 1:
-                taskandBugInstance = (workList?.BugList![indexPath.row])!
+                taskandBugInstance = (dev!.bug![indexPath.row])
             default:
                 break
             }
+
             
-            cell.devPic.image = devImage
-            cell.taskTitle.text = taskandBugInstance.WorkItemName
+            
+            cell.taskTitle.text = taskandBugInstance.title
             var temp = ""
-            switch taskandBugInstance.Priority {
+            switch taskandBugInstance.priority {
             case 1:
                 temp = "High"
             case 2:
@@ -110,12 +119,17 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
                 break
             }
             cell.pirorityLabel.text = temp
-            cell.projectName.text = taskandBugInstance.ProjectName
-            switch taskandBugInstance.Status {
+            switch taskandBugInstance.state {
+            case "Done":
+                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.2316122055, green: 0.7209670544, blue: 0.4477117658, alpha: 1)
             case "Closed":
                 cell.statusColorView.backgroundColor = #colorLiteral(red: 0.2316122055, green: 0.7209670544, blue: 0.4477117658, alpha: 1)
+            case "In Progress":
+                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
             case "Active":
                 cell.statusColorView.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+            case "To Do":
+                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
             case "New":
                 cell.statusColorView.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
             case .none:
@@ -124,25 +138,18 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
                 break
             }
             
-//            if (taskandBugInstance.Priority == 3 || taskandBugInstance.Priority == 4) {
-//                cell.colorPirority.backgroundColor = #colorLiteral(red: 0.1439316273, green: 0.6425683498, blue: 0.9966294169, alpha: 1)
-//            } else  if (taskandBugInstance.Priority == 2) {
-//                cell.colorPirority.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
-//            } else  if (taskandBugInstance.Priority == 1) {
-//                cell.colorPirority.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-//            }
-            
-            cell.numberCommentLabel.text = "\(taskandBugInstance.CommentCount ?? 0)"
-            
-            var startDate = ""
-            if let date = taskandBugInstance.StartDateTime {
-                startDate  = String(date.prefix(10))
+            if let description = taskandBugInstance.description {
+                cell.descriptionLabel.text = "\(description)"
             }
             
+            cell.numberCommentLabel.text = "\(taskandBugInstance.comment?.count ?? 0)"
+            var startDate = ""
+            if let date = taskandBugInstance.createdDate {
+                startDate  = String(date.prefix(10))
+            }
             cell.dateLabel.text = startDate
             return cell
         default:
-            let cell = UITableViewCell()
             return cell
         }
         
@@ -152,15 +159,15 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         switch segmentControl.selectedSegmentIndex {
         case 0:
             let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
-            vc.task = workList?.TaskList?[indexPath.row]
+            vc.task = dev?.task![indexPath.row]
             vc.navigationItem.title = "Task Detail"
-            vc.devImage = devImage ?? nil
+            vc.devImage = nil
             navigationController?.pushViewController(vc, animated: true)
         case 1:
             let vc = storyboard?.instantiateViewController(withIdentifier: "taskandbugdetail") as! TaskAndBugDetailViewController
-            vc.task = workList?.BugList?[indexPath.row]
+            vc.task = dev?.bug![indexPath.row]
             vc.navigationItem.title = "Bug Detail"
-            vc.devImage = devImage ?? nil
+            vc.devImage = nil
             navigationController?.pushViewController(vc, animated: true)
         default:
             break
@@ -176,16 +183,5 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         tableViewList.reloadData()
     }
     
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

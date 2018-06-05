@@ -10,6 +10,7 @@ pod 'AlamofireObjectMapper', '~> 5.0'
 pod 'SVProgressHUD'
 pod 'DateTimePicker'
 pod 'ActionSheetPicker-3.0'
+pod 'AlamofireImage', '~> 3.3'
   # Pods for Senior Project I
 
   target 'Senior Project ITests' do
