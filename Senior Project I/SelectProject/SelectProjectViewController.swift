@@ -25,8 +25,6 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
         activityView.startAnimating()
         activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
-        
-        
         accountName = UserDefaults.standard.string(forKey: "accountName")
         fetch()
 
@@ -110,14 +108,13 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "projectCell", for: indexPath) as! ProjectTableViewCell
-        
         var project = projectListFinal[indexPath.row]
-        cell.selectionStyle = .none
-        cell.projectName.text = project.name! + " Project"
         var complete = 0
         var doing = 0
         var new = 0
         
+        cell.selectionStyle = .none
+        cell.projectName.text = project.name! + " Project"
         for task in project.task! {
             switch task.state {
             case "Done":
@@ -205,15 +202,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                 }
             }
         }
-        
-        
-        
-       
-       
-
-        
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

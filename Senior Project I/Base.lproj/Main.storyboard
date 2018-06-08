@@ -2193,27 +2193,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sfx-Hq-Pkc">
                                                     <rect key="frame" x="8" y="8" width="398" height="72"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="o7h-00-Icc">
-                                                            <rect key="frame" x="14" y="34" width="30" height="30"/>
-                                                            <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sCk-He-AJW">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="30" id="52l-MZ-sl0"/>
-                                                                        <constraint firstAttribute="width" constant="30" id="9HL-ZG-SAr"/>
-                                                                    </constraints>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                            <real key="value" value="15"/>
-                                                                        </userDefinedRuntimeAttribute>
-                                                                    </userDefinedRuntimeAttributes>
-                                                                </imageView>
-                                                            </subviews>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="30" id="3OS-EZ-Xb3"/>
-                                                                <constraint firstAttribute="width" constant="30" id="k7m-nc-J2b"/>
-                                                            </constraints>
-                                                        </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tAe-2c-bfz">
                                                             <rect key="frame" x="0.0" y="0.0" width="6" height="72"/>
                                                             <color key="backgroundColor" red="0.2316122055" green="0.72096705439999997" blue="0.44771176579999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2258,13 +2237,19 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yx5-Ao-0wd">
-                                                            <rect key="frame" x="239" y="43" width="95" height="21"/>
+                                                            <rect key="frame" x="274" y="43" width="60" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="60" id="3vL-pf-wV1"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oDW-Ks-6TK">
-                                                            <rect key="frame" x="52" y="39.666666666666664" width="41.666666666666657" height="20.333333333333336"/>
+                                                            <rect key="frame" x="14" y="39.666666666666664" width="252" height="20.333333333333336"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="ko6-7e-64c"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2279,19 +2264,17 @@
                                                         <constraint firstAttribute="trailing" secondItem="zKv-A3-Q0p" secondAttribute="trailing" constant="8" id="60Q-FL-uTD"/>
                                                         <constraint firstItem="yx5-Ao-0wd" firstAttribute="top" secondItem="Sfx-Hq-Pkc" secondAttribute="top" constant="43" id="CHt-ID-ymd"/>
                                                         <constraint firstItem="tAe-2c-bfz" firstAttribute="top" secondItem="Sfx-Hq-Pkc" secondAttribute="top" id="DnN-3C-Yhz"/>
-                                                        <constraint firstItem="yx5-Ao-0wd" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Sfx-Hq-Pkc" secondAttribute="leading" constant="239" id="FDE-Aa-LxM"/>
                                                         <constraint firstAttribute="trailing" secondItem="yx5-Ao-0wd" secondAttribute="trailing" constant="64" id="Fuv-MR-yaX"/>
-                                                        <constraint firstItem="o7h-00-Icc" firstAttribute="leading" secondItem="tAe-2c-bfz" secondAttribute="trailing" constant="8" id="NU3-kI-Ksp"/>
                                                         <constraint firstAttribute="bottom" secondItem="Wcs-24-2dg" secondAttribute="bottom" constant="8" id="O7N-L5-iCa"/>
-                                                        <constraint firstItem="oDW-Ks-6TK" firstAttribute="leading" secondItem="o7h-00-Icc" secondAttribute="trailing" constant="8" id="SAh-6D-OfZ"/>
                                                         <constraint firstItem="kgy-bY-uUb" firstAttribute="leading" secondItem="tAe-2c-bfz" secondAttribute="trailing" constant="12" id="Sll-qh-m8Q"/>
+                                                        <constraint firstItem="oDW-Ks-6TK" firstAttribute="leading" secondItem="tAe-2c-bfz" secondAttribute="trailing" constant="8" id="Swy-N0-zws"/>
                                                         <constraint firstAttribute="bottom" secondItem="vws-VA-vfR" secondAttribute="bottom" constant="8" id="c6K-nY-MJg"/>
                                                         <constraint firstAttribute="bottom" secondItem="oDW-Ks-6TK" secondAttribute="bottom" constant="12" id="dAb-vW-8O8"/>
                                                         <constraint firstItem="tAe-2c-bfz" firstAttribute="leading" secondItem="Sfx-Hq-Pkc" secondAttribute="leading" id="ds6-54-h3C"/>
                                                         <constraint firstAttribute="trailing" secondItem="vws-VA-vfR" secondAttribute="trailing" constant="8" id="emX-hL-qls"/>
                                                         <constraint firstAttribute="bottom" secondItem="yx5-Ao-0wd" secondAttribute="bottom" constant="8" id="hvU-k9-dNk"/>
-                                                        <constraint firstAttribute="bottom" secondItem="o7h-00-Icc" secondAttribute="bottom" constant="8" id="itE-Ec-G1r"/>
                                                         <constraint firstItem="zKv-A3-Q0p" firstAttribute="top" secondItem="Sfx-Hq-Pkc" secondAttribute="top" constant="8" id="xds-ZS-PIu"/>
+                                                        <constraint firstItem="yx5-Ao-0wd" firstAttribute="leading" secondItem="oDW-Ks-6TK" secondAttribute="trailing" constant="8" id="zOI-lo-IcL"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -2305,7 +2288,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dateLabel" destination="zKv-A3-Q0p" id="QJ3-G1-bd8"/>
-                                            <outlet property="devPic" destination="sCk-He-AJW" id="HTN-xU-WGt"/>
                                             <outlet property="numberCommentLabel" destination="vws-VA-vfR" id="0vd-4q-xI6"/>
                                             <outlet property="pirorityLabel" destination="yx5-Ao-0wd" id="K9F-rQ-s0P"/>
                                             <outlet property="projectName" destination="oDW-Ks-6TK" id="wM0-Me-e3D"/>

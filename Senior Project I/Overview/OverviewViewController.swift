@@ -19,7 +19,6 @@ struct MemberTaskInformation {
 class OverviewViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var project: ProjectFromTFS?
-    let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     var tasks = [WorkItemFromTFS]()
     var bugs = [WorkItemFromTFS]()
     var memberTaskList = [MemberTaskInformation]()
@@ -42,12 +41,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
         navigationItem.title = "Project Overview"
         fetch()
         
-        activityView.hidesWhenStopped = true
-        activityView.center = self.view.center
-        activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-        view.addSubview(activityView)
-        
-       
         numberofCompleteLabel.text = "\(project!.taskProgress.complete)"
         numberofDoingLabel.text = "\(project!.taskProgress.doing)"
         numberofRemainingLabel.text = "\(project!.taskProgress.new)"
@@ -55,7 +48,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func fetch() {
-        activityView.startAnimating()
         let accountName = UserDefaults.standard.string(forKey: "accountName")
         let token = UserDefaults.standard.string(forKey: "Token")
 
@@ -135,7 +127,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
                         firstItem.stateValue < secondItem.stateValue
                     }
                     self.table.reloadData()
-                    self.activityView.stopAnimating()
                 }
             }
             
@@ -207,10 +198,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.assignToLabel.text = ""
             }
             
-//            if cell.devPic.image != nil {
-//                cell.devPic.image = #imageLiteral(resourceName: "user")
-//            }
-            
             switch taskandBugInstance[indexPath.row].state {
             case "Done":
                 cell.statusColorView.backgroundColor = #colorLiteral(red: 0.2, green: 0.6784313725, blue: 0.3725490196, alpha: 1)
@@ -251,101 +238,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
             }
 
             cell.dateLabel.text = startDate
-            
-//
-//            for member in teamMembers!.Value! {
-//                switch segmentControl.selectedSegmentIndex {
-//                case 1:
-//                    if (member.DisplayName == workList?.TaskList![indexPath.row].MemberName) {
-//                        if (member.ImageUrl == nil) {
-//                            cell.devPic.image = #imageLiteral(resourceName: "user")
-//                            taskImageList.append(#imageLiteral(resourceName: "user"))
-//                        } else {
-//                            let encodedImageData = member.ImageUrl
-//                            if let decodedData = Data(base64Encoded: encodedImageData!, options: .ignoreUnknownCharacters) {
-//                                if let image = UIImage(data: decodedData) {
-//                                    cell.devPic.image = image
-//                                    taskImageList.append(image)
-//                                } else {
-//                                    cell.devPic.image = #imageLiteral(resourceName: "user")
-//                                    taskImageList.append(#imageLiteral(resourceName: "user"))
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                case 2:
-//                    if (member.DisplayName == workList?.BugList![indexPath.row].MemberName) {
-//                        if (member.ImageUrl == nil) {
-//                            cell.devPic.image = #imageLiteral(resourceName: "user")
-//                            bugImageList.append(#imageLiteral(resourceName: "user"))
-//                        } else {
-//                            let encodedImageData = member.ImageUrl
-//                            if let decodedData = Data(base64Encoded: encodedImageData!, options: .ignoreUnknownCharacters) {
-//                                if let image = UIImage(data: decodedData) {
-//                                    cell.devPic.image = image
-//                                    bugImageList.append(image)
-//                                } else {
-//                                    cell.devPic.image = #imageLiteral(resourceName: "user")
-//                                    bugImageList.append(#imageLiteral(resourceName: "user"))
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                default:
-//                    break
-//                }
-//
-//
-//            }
-//
-//
-//            cell.taskTitle.text = taskandBugInstance.WorkItemName
-//            var temp = ""
-//            switch taskandBugInstance.Priority {
-//            case 1:
-//                temp = "High"
-//            case 2:
-//                temp = "Medium"
-//            case 3:
-//                temp = "Low"
-//            case 4:
-//                temp = "Very Low"
-//            default:
-//                break
-//            }
-//            cell.pirorityLabel.text = temp
-//
-//            switch taskandBugInstance.Status {
-//            case "Closed":
-//                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.2316122055, green: 0.7209670544, blue: 0.4477117658, alpha: 1)
-//            case "Active":
-//                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
-//            case "New":
-//                cell.statusColorView.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-//            case .none:
-//                break
-//            case .some(_):
-//                break
-//            }
-//
-////            if (taskandBugInstance.Priority == 3 || taskandBugInstance.Priority == 4) {
-////                cell.colorPirority.backgroundColor = #colorLiteral(red: 0.1439316273, green: 0.6425683498, blue: 0.9966294169, alpha: 1)
-////            } else  if (taskandBugInstance.Priority == 2) {
-////                cell.colorPirority.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
-////            } else  if (taskandBugInstance.Priority == 1) {
-////                cell.colorPirority.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-////            }
-//
-//            cell.numberCommentLabel.text = "\(taskandBugInstance.CommentCount ?? 0)"
-//
-//            var startDate = ""
-//            if let date = taskandBugInstance.StartDateTime {
-//                startDate  = String(date.prefix(10))
-//            }
-
-//            cell.dateLabel.text = startDate
             return cell
         default:
             let cell = UITableViewCell()

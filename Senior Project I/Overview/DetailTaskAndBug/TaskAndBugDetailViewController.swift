@@ -9,10 +9,9 @@
 import UIKit
 import Alamofire
 class TaskAndBugDetailViewController: UIViewController {
-
+    
     var task: WorkItemFromTFS?
     var devImage: UIImage?
-//    var comments: [Comment]?
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     @IBOutlet weak var tableView: UITableView!
@@ -76,23 +75,7 @@ class TaskAndBugDetailViewController: UIViewController {
             descriptionLabel.text = t.description
             devPicture.image = devImage
             startDate.text = String((t.createdDate?.prefix(10))!)
-  
             
-//            let userID = UserDefaults.standard.integer(forKey: "UserID")
-//            let accountName = UserDefaults.standard.string(forKey: "accountName")
-//            let url = ("http://traxtfsapi.azurewebsites.net/trax/getworkitemcomments?witid=\(t.WorkItemID!)&userid=\(userID)&accountname=\(accountName!)")
-//            let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
-//            Alamofire.request(safeURL!).responseJSON { (response) in
-//                do {
-//                    let comments = try JSONDecoder().decode([Comment].self, from: response.data!)
-//                    self.comments = comments
-//                    print("pass")
-//                    self.tableView.reloadData()
-//                    self.activityView.stopAnimating()
-//                } catch {
-//                    print("error")
-//                }
-//            }
         }
         
         taskProfileView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50 + taskCardView.frame.height + 8)
@@ -113,11 +96,17 @@ class TaskAndBugDetailViewController: UIViewController {
             print("Cancel")
         })
         alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.cancel) { (action) in
-//            let userid = UserDefaults.standard.integer(forKey: "UserID")
-//            let accountName = UserDefaults.standard.string(forKey: "accountName")
-//            Alamofire.request("http://traxtfsapi.azurewebsites.net/trax/completeworkitem?userid=\(userid)&accountname=\(accountName!)&witid=\(self.task!.WorkItemID!)").resume()
-//            self.navigationController?.popViewController(animated: true)
-//            print("Done this task")
+            let accountName = UserDefaults.standard.string(forKey: "accountName")
+            let token = UserDefaults.standard.string(forKey: "Token")
+            completeWorkItem(accountName: accountName!, token: token!, witID: self.task!.ID!, result: { (isSuccess) in
+                if (isSuccess) {
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    let alert = UIAlertController(title: "Server Error", message: "Could not success this task.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: nil))
+                }
+            })
+
         })
         
         
@@ -126,19 +115,19 @@ class TaskAndBugDetailViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
 
 extension TaskAndBugDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return task?.comment?.count ?? 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! CommentTableViewCell
         let comment = task?.comment![indexPath.row]
@@ -156,7 +145,7 @@ extension TaskAndBugDetailViewController: UITableViewDelegate, UITableViewDataSo
         cell.commentLabel.text = comment?.description ?? ""
         cell.commentView.layer.cornerRadius = cell.commentLabel.bounds.height * 0.2
         return cell
-//        return UITableViewCell()
+        //        return UITableViewCell()
     }
     
     

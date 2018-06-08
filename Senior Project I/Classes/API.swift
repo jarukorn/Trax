@@ -174,7 +174,6 @@ func getTaskFromWorkItemID(token: String, id: String, accountName: String,resume
                         workItemList.append(workItemTemp)
                     }
                 }
-                
                 resume(workItemList)
             }
         }
@@ -204,8 +203,7 @@ func getComment(accountName:String, token:String, task: WorkItemFromTFS, resume:
                 resume(commentList)
             }
         }
-        
-        }.resume()
+    }.resume()
 }
 
 
@@ -230,7 +228,6 @@ func completeWorkItem(accountName: String, token: String,witID: Int, result: @es
             if let json = response.result.value as? [String:AnyObject] {
                 if let value = json["fields"] as? [String:AnyObject] {
                     let state = value["System.State"] as? String
-                    
                     if (state == "Closed") {
                         result(true)
                     } else {
@@ -243,7 +240,7 @@ func completeWorkItem(accountName: String, token: String,witID: Int, result: @es
         } else {
             
         }
-    }
+    }.resume()
 }
 
 func getTeamMember(accountName: String, token: String, projectID: String, teamID:String, result: @escaping ([TeamMemberTFS]) -> Void ) {
@@ -303,13 +300,12 @@ func getTeamID(accountName: String,token:String,projectID:String,result: @escapi
                 }
             }
         }
-        }.resume()
+    }.resume()
 }
 
 
 //Not Use
 func getAccountList(tfs_id: String, token: String, resume: @escaping ([Account]) -> Void)  {
-    
     let base64LoginData = get64(token: token)
     let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
     
@@ -324,6 +320,102 @@ func getAccountList(tfs_id: String, token: String, resume: @escaping ([Account])
                     accountList.append(accountTemp)
                 }
                 resume(accountList)
+            }
+        }
+    }.resume()
+}
+
+func getTodayTask(accountName:String, developerName: String, token : String, resume: @escaping ([Int]) -> Void) {
+    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/_apis/wit/wiql?api-version=1.0")
+    var request = URLRequest(url: url!)
+    let pjson =
+    """
+    {
+    "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task' and [System.AssignedTo] = '\(developerName)' or [System.WorkItemType] = 'Bug' and [System.AssignedTo] = '\(developerName)' "
+    }
+    """
+    let data = (pjson.data(using: .utf8))! as Data
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    
+    request.httpMethod = HTTPMethod.post.rawValue
+    request.httpMethod = "POST"
+    request.httpBody = data
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.allHTTPHeaderFields = headers
+    Alamofire.request(request).responseJSON { (response) in
+        if let json = response.result.value as? [String:AnyObject] {
+            if let workItems = json["workItems"] as? [[String:AnyObject]] {
+                var workItemList = [Int]()
+                for i in workItems {
+                    if let id = i["id"] as? Int {
+                        workItemList.append(id)
+                    }
+                }
+                resume(workItemList)
+            }
+        }
+    }.resume()
+    
+}
+
+struct TeamList {
+    var projectID: String?
+    var teamID: String?
+}
+
+func getTeamList(accountName: String, token: String, result: @escaping ([TeamList]) -> Void ) {
+    let url = URL(string: "https://\(accountName).visualstudio.com/_apis/teams?api-version=4.1-preview.2")
+    var teamList = [TeamList]()
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    Alamofire.request(url!, headers:headers).responseJSON { (response) in
+        if (response.result.value != nil) {
+            if let json = response.result.value as? [String:AnyObject] {
+                let value = json["value"] as? [[String:AnyObject]]
+                for obj in value! {
+                    let projectID = obj["projectId"] as? String
+                    let teamid = obj["id"] as? String
+                    let member = TeamList(projectID: projectID, teamID: teamid)
+                    teamList.append(member)
+                }
+                result(teamList)
+            } else {
+                
+            }
+        } else {
+            
+        }
+        }.resume()
+}
+
+func getWorkItemOfEachDev(accountName: String, devName: String,token : String, resume: @escaping ([Int]) -> Void) {
+    let url = "https://\(accountName).visualstudio.com/DefaultCollection/_apis/wit/wiql?api-version=1.0"
+    print(url)
+    var request = URLRequest(url: URL(string: url)!)
+    request.httpMethod = HTTPMethod.post.rawValue
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    let pjson = """
+    {
+    "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task'  and [System.AssignedTo] = '\(devName)' or [System.WorkItemType] = 'Bug' and [System.AssignedTo] = '\(devName)' " }
+    """
+    let data = (pjson.data(using: .utf8))! as Data
+    let base64LoginData = get64(token: token)
+    let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
+    request.httpMethod = "POST"
+    request.httpBody = data
+    request.allHTTPHeaderFields = headers
+    
+    Alamofire.request(request).responseJSON { (response) in
+        if let json = response.result.value as? [String:AnyObject] {
+            if let workItems = json["workItems"] as? [[String:AnyObject]] {
+                var workItemList = [Int]()
+                for i in workItems {
+                    if let id = i["id"] as? Int {
+                        workItemList.append(id)
+                    }
+                }
+                resume(workItemList)
             }
         }
     }
