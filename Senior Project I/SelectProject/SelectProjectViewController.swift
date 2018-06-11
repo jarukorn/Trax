@@ -71,16 +71,12 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                                         getImage(imageUrl: TeamMemberTemp[k].imageURL, token: token!, result: { (Image) in
                                             self.projectListFinal[i].teamList![k].image = Image
                                             interation = interation + 1
-                                            if interation == self.projectListFinal.count-1 {
+                                            if interation == self.projectListFinal.count {
                                                 DispatchQueue.main.async(execute: {
-                                                    sleep(1)
                                                     self.tableView.reloadData()
                                                     self.activityView.stopAnimating()
                                                 })
                                             }
-                                           
-                                            
-
                                         })
                                     })
                                    
