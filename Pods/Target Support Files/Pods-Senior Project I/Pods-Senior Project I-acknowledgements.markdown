@@ -127,6 +127,10 @@ SOFTWARE.
 
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2018 Google
+
 ## ObjectMapper
 
 The MIT License (MIT)

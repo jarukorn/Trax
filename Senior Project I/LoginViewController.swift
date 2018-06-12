@@ -8,6 +8,9 @@
 
 import UIKit
 import Alamofire
+import LocalAuthentication
+import UserNotifications
+import GoogleMobileAds
 
 class LoginViewController: UIViewController {
 
@@ -17,8 +20,14 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var signUpBtn: UIButton!
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
+    @IBOutlet weak var adsBanner: GADBannerView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        adsBanner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        adsBanner.rootViewController = self
+        adsBanner.load(GADRequest())
+        
         loginBtn.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         signUpBtn.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.hideKeyboardWhenTappedAround()
@@ -28,10 +37,26 @@ class LoginViewController: UIViewController {
         view.addSubview(activityView)
         if let username = UserDefaults.standard.string(forKey: "Username") {
             if let password = UserDefaults.standard.string(forKey: "Password") {
-                fetch(username: username,password: password)
+                //fetch(username: username,password: password)
             }
         }
-     
+        
+        timeNotifications(inSeconds: 3) { (success) in
+            if success {
+                print("Successfully Notified")
+            }
+        }
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {(success, error) in
+            if error != nil {
+                print("Authorization Unsuccessful")
+            } else {
+                print("Authorization Successful")
+            }
+        }
+        
+        
+        
     }
     
     func fetch(username:String, password:String) {
@@ -75,14 +100,14 @@ class LoginViewController: UIViewController {
                                     let accountVc = self.storyboard?.instantiateViewController(withIdentifier: "accountList_vc") as! AccountListViewController
                                     accountVc.accountName = loginAccessAndTask.AccountList
                                     UserDefaults.standard.set(loginAccessAndTask.AccountList, forKey: "accountName")
-                                    
+
                                     UserDefaults.standard.set(loginAccessAndTask.AccountList, forKey: "accountList")
                                     let account_nav = UINavigationController(rootViewController: accountVc)
-                                    
+
                                     self.present(account_nav, animated: true, completion: nil)
-                                    
+
                                 }
-                                
+
                             } catch {
                                 print("error")
                             }
@@ -101,6 +126,11 @@ class LoginViewController: UIViewController {
 
     @IBAction func loginBtnClicked(_ sender: Any) {
         fetch(username: emailTextField.text!, password: passwordTextField.text!)
+        timeNotifications(inSeconds: 3) { (success) in
+            if success {
+                print("Successfully Notified")
+            }
+        }
     }
     
     @IBAction func signUpBtnClicked(_ sender: Any) {
@@ -112,15 +142,25 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func timeNotifications(inSeconds: TimeInterval, completion: @escaping (_ Success: Bool) -> ()) {
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
+        let content = UNMutableNotificationContent()
+        
+        content.title = "Welcome"
+        content.subtitle = "Enjoy using our application!"
+        content.body = "ealhuioklew knvoenrxydtufyiguohslobejaknsc lwedbjvjnwek"
+        
+        
+        let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if error != nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
     }
-    */
 
 }

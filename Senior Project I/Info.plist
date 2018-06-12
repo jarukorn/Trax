@@ -4,6 +4,17 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>ShortcutItemExample</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Account List</string>
+			<key>UIApplicationShortcutIconType</key>
+			<string>UIApplicationShortcutIconTypeSearch</string>
+		</dict>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Trax</string>
 	<key>CFBundleExecutable</key>
@@ -56,5 +67,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app uses Face ID to confirm your identity.</string>
 </dict>
 </plist>

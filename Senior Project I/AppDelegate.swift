@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import GoogleMobileAds
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544/2934735716")
+        UNUserNotificationCenter.current().delegate = self
+        
         // Override point for customization after application launch.
         window?.makeKeyAndVisible()
         UIApplication.shared.statusBarStyle = .lightContent
@@ -90,6 +96,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem,  completionHandler: @escaping (Bool) -> Void) {
+        // Transition to the pressed tab
+        print("Action!")
+    }
+    
 }
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+}
+
+
 

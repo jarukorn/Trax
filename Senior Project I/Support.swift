@@ -70,4 +70,18 @@ extension String {
     
 }
 
+func notifyUser(viewController: UIViewController, _ msg: String, err: String?) {
+    let alert = UIAlertController(title: msg,message: err,preferredStyle: .alert)
+    let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+    
+    alert.addAction(cancelAction)
+    viewController.present(alert, animated: true,completion: nil)
+}
+
+func showAlertController(viewController: UIViewController,_ message: String) {
+    let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    viewController.present(alertController, animated: true, completion: nil)
+}
+
 

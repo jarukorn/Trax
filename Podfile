@@ -11,6 +11,8 @@ pod 'SVProgressHUD'
 pod 'DateTimePicker'
 pod 'ActionSheetPicker-3.0'
 pod 'AlamofireImage', '~> 3.3'
+pod 'Google-Mobile-Ads-SDK'
+
   # Pods for Senior Project I
 
   target 'Senior Project ITests' do

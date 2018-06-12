@@ -7,6 +7,7 @@ PODS:
     - Alamofire (~> 4.1)
     - ObjectMapper (~> 3.0)
   - DateTimePicker (1.2.1)
+  - Google-Mobile-Ads-SDK (7.31.0)
   - ObjectMapper (3.1.0)
   - SVProgressHUD (2.2.5)
   - SwiftyJSON (4.0.0)
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - AlamofireImage (~> 3.3)
   - AlamofireObjectMapper (~> 5.0)
   - DateTimePicker
+  - Google-Mobile-Ads-SDK
   - SVProgressHUD
   - SwiftyJSON
 
@@ -26,10 +28,11 @@ SPEC CHECKSUMS:
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   AlamofireObjectMapper: 5fafc816351cbbc0d486611aaeba7461c0cbad49
   DateTimePicker: c7b10f7dfe6eb06014c88df964a0a994f246b791
+  Google-Mobile-Ads-SDK: 6e529e748b45507a2ca904e0b5a52669ba3920c4
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 66066bd876f1f256143b149ee140e158dc66582b
+PODFILE CHECKSUM: 3db7276afe377177e5666839edaf82a0f36e8bcd
 
 COCOAPODS: 1.4.0

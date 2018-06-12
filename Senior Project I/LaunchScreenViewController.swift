@@ -8,11 +8,12 @@
 
 import UIKit
 import Alamofire
+import LocalAuthentication
+import UserNotifications
 
 class LaunchScreenViewController: UIViewController {
     
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,26 +22,18 @@ class LaunchScreenViewController: UIViewController {
         activityView.startAnimating()
         self.view.addSubview(activityView)
         // Do any additional setup after loading the view.
+        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if let username = UserDefaults.standard.string(forKey: "Username") {
-            if let password = UserDefaults.standard.string(forKey: "Password") {
-                fetch(username: username,password: password)
-            }
-        } else {
-            sleep(1)
-            let login_vc = storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-            login_vc.modalTransitionStyle = .crossDissolve
-            present(login_vc, animated: true) {
-                print("pass")
+    func isTouchIdSupported() -> Bool {
+        
+        let context = LAContext()
+        if #available(iOS 11.0, *){
+            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+                return context.biometryType == LABiometryType.touchID
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        return false
     }
     
     func fetch(username:String, password:String) {
@@ -69,7 +62,6 @@ class LaunchScreenViewController: UIViewController {
                                     let account_nav = UINavigationController(rootViewController: accountVc)
                                     
                                     self.present(account_nav, animated: true, completion: nil)
-                                    
                                 }
                                 
                             } catch {
@@ -96,5 +88,72 @@ class LaunchScreenViewController: UIViewController {
             }
         }
     }
-
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        timeNotifications(inSeconds: 3) { (success) in
+            if success {
+                print("Successfully Notified")
+            }
+        }
+        
+        if let username = UserDefaults.standard.string(forKey: "Username") {
+            if let password = UserDefaults.standard.string(forKey: "Password") {
+                if (isTouchIdSupported()) {
+                    print("Support")
+                    let context = LAContext()
+                    let reason = "Authenticate with Touch ID"
+                    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason,
+                                           reply: {(succes, error) in
+                                            if succes {
+                                                 self.fetch(username: username, password: password)
+                                            }
+                                            else {
+                                                let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                                                login_vc.modalTransitionStyle = .crossDissolve
+                                                self.present(login_vc, animated: true) {
+                                                    print("pass")
+                                                }
+                                            }
+                    })
+                } else {
+                    let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                    login_vc.modalTransitionStyle = .crossDissolve
+                    self.present(login_vc, animated: true) {
+                        print("pass")
+                    }
+                }
+            }
+        } else {
+            let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+            login_vc.modalTransitionStyle = .crossDissolve
+            self.present(login_vc, animated: true) {
+                print("pass")
+            }
+        }
+        
+        
+    }
+    
+    func timeNotifications(inSeconds: TimeInterval, completion: @escaping (_ Success: Bool) -> ()) {
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
+        let content = UNMutableNotificationContent()
+        
+        content.title = "Welcome"
+        content.subtitle = "Enjoy using our application!"
+        content.body = "ealhuioklew knvoenrxydtufyiguohslobejaknsc lwedbjvjnwek"
+        
+        
+        let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if error != nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
 }
+
