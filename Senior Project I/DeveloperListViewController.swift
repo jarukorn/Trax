@@ -14,6 +14,7 @@ class DeveloperListViewController: UIViewController {
     struct DevProgress {
         var name: String?
         var imageURL: String?
+        var image : UIImage?
         var new = 0
         var doing = 0
         var done = 0
@@ -25,10 +26,9 @@ class DeveloperListViewController: UIViewController {
     var projectListFinal = [ProjectFromTFS]()
     var tempTeamMember = [TeamMemberTFS]()
     var teamMember = [TeamMemberTFS]()
-    var devProgress = [DevProgress]()
+    var devProgressList = [DevProgress]()
     var todayTask: [WorkItemFromTFS]?
-    var tasks = [WorkItemFromTFS]()
-    var bugs = [WorkItemFromTFS]()
+    var allTasks = [WorkItemFromTFS]()
     var devImageList = [UIImage]()
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     var nameList = [String]()
@@ -99,8 +99,7 @@ class DeveloperListViewController: UIViewController {
         checkerTasks = 0
         checkerBugs = 0
         todayTask = []
-        tasks = []
-        bugs = []
+        allTasks = []
         activityView.startAnimating()
         var iteration4 = 0
         var iteration5 = 0
@@ -123,18 +122,14 @@ class DeveloperListViewController: UIViewController {
                     getTaskFromWorkItemID(token: self.token!, id: workItemStr, accountName: accountName!, resume: { (workItems) in
                         self.todayTask = workItems
                         for task in self.todayTask! {
-                            if task.type == "Task" {
-                                self.tasks.append(task)
-                            } else if task.type == "Bug" {
-                                self.bugs.append(task)
-                            }
+                            self.allTasks.append(task)
                             progress.name = member.name
                             progress.imageURL = member.imageURL
                             progress.workItemList = workItems
                            
                         }
                         if iteration4 == self.teamMember.count && iteration5 == workItemNumberList.count {
-                            print(self.tasks)
+                            print(self.allTasks)
                             self.modifyPresenter()
                         }
                         
@@ -148,189 +143,95 @@ class DeveloperListViewController: UIViewController {
     }
     
     func modifyPresenter() {
-        print(tasks.count)
-        print(bugs.count)
+        print(allTasks.count)
         print(teamMember.count)
-//        for k in workItems {
-//            if (k.state == "New") {
-//                progress.new = progress.new + 1
-//            } else if(k.state == "To Do") {
-//                progress.new = progress.new + 1
-//            } else if(k.state == "In Progress") {
-//                progress.doing = progress.doing + 1
-//            } else if(k.state == "Active") {
-//                progress.doing = progress.doing + 1
-//            } else if(k.state == "Done") {
-//                progress.done = progress.done + 1
-//            } else if(k.state == "Closed") {
-//                progress.done = progress.done + 1
-//            }
-//        }
-//        if self.devProgress.count == 0 {
-//            self.devProgress.append(progress)
-//        } else {
-//            for i in 0...self.devProgress.count - 1 {
-//                if member.name == self.devProgress[i].name {
-//                    self.devProgress[i].done = self.devProgress[i].done + progress.done
-//                    self.devProgress[i].doing = self.devProgress[i].doing + progress.doing
-//                    self.devProgress[i].new = self.devProgress[i].new + progress.new
-//                } else {
-//                    self.devProgress.append(progress)
-//                }
-//            }
-//        }
-//        if iteration4 == self.teamMember.count && iteration6 == (self.todayTask?.count)! {
-//            self.tableView.reloadData()
-//            self.activityView.stopAnimating()
-//        }
+        
+        for team in teamMember {
+            let dev = DevProgress(name: team.name, imageURL: team.imageURL, image: nil, new: 0, doing: 0, done: 0, workItemList: [WorkItemFromTFS]())
+            devProgressList.append(dev)
+        }
+        
+        for task in allTasks {
+            for i in 0...devProgressList.count-1 {
+                let list = task.assignedTo?.split(separator: "<", maxSplits: 1, omittingEmptySubsequences: true)
+                let temp = String(list![0].dropLast())
+                if temp == devProgressList[i].name {
+                    switch task.state {
+                    case "Done":
+                        devProgressList[i].done = devProgressList[i].done + 1
+                    case "Closed":
+                        devProgressList[i].done = devProgressList[i].done + 1
+                    case "In Progress":
+                        devProgressList[i].doing = devProgressList[i].doing + 1
+                    case "Active":
+                        devProgressList[i].doing = devProgressList[i].doing + 1
+                    case "To Do":
+                        devProgressList[i].new = devProgressList[i].new + 1
+                    case "New":
+                        devProgressList[i].new = devProgressList[i].new + 1
+                    default:
+                        break
+                    }
+                    devProgressList[i].workItemList?.append(task)
+                }
+            }
+        }
+        getPic()
     }
     
-    
-    
-//    func getDevList() {
-//        let account = UserDefaults.standard.string(forKey: "accountName")
-//        let token = UserDefaults.standard.string(forKey: "Token")
-//        getTeamList(accountName: account!, token: token!) { (teams) in
-//            print(teams.count)
-//            var interationA = 0
-//            var interationB = 0
-//            for i in teams {
-//                interationA = interationA + 1
-//                getTeamMember(accountName: account!, token: token!, projectID: i.projectID!, teamID: i.teamID!) { (memberList) in
-//                    //                    print(memberList.count)
-//                    //                    self.teamMember.append(contentsOf: memberList)
-//                    //                    print(self.teamMember.count)
-//                    //                    self.tableView.reloadData()
-//                    for j in memberList {
-//                        interationB = interationB + 1
-//                        getWorkItemOfEachDev(accountName: account!, devName: j.name, token: token!) { (workItemArray) in
-//                            print("workItem: \(workItemArray.count)")
-//                            var workItemStr = ""
-//                            print(workItemArray.count)
-//                            if workItemArray.count != 0 {
-//                                for j in 0...workItemArray.count-1 {
-//                                    workItemStr = workItemStr + "\(workItemArray[j])"
-//                                    if (j != workItemArray.count-1) {
-//                                        workItemStr = workItemStr + ","
-//                                    }
-//                                }
-//                                getTaskFromWorkItemID(token: token!, id: workItemStr, accountName: account!, resume: { (workItems) in
-//                                    var progress = DevProgress()
-//                                    progress.name = j.name
-//                                    progress.imageURL = j.imageURL
-//                                    progress.workItemList = workItems
-//                                    for k in workItems {
-//                                        if (k.state == "New") {
-//                                            progress.new = progress.new + 1
-//                                        } else if(k.state == "Active") {
-//                                            progress.doing = progress.doing + 1
-//                                        } else if(k.state == "Closed") {
-//                                            progress.done = progress.done + 1
-//                                        }
-//                                    }
-//                                    self.devProgress.append(progress)
-//                                    if interationA == teams.count-1 && interationB == workItemArray.count - 1 {
-//                                        self.tableView.reloadData()
-//                                    }
-//                                })
-//                            } else {
-//                                self.tableView.reloadData()
-//                                self.activityView.stopAnimating()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        //        for i in projects {
-//        //
-//        //            getTeamID(accountName: account!, token: token!, projectID: i.id!) { (teamID) in
-//        //                print(teamID)
-//        //                getTeamMember(accountName: account!, token: token!, projectID: i.id!, teamID: teamID) { (memberList) in
-//        //                    print(memberList.count)
-//        //                    self.teamMember.append(contentsOf: memberList)
-//        //                    print(self.teamMember.count)
-//        //                    self.tableView.reloadData()
-//        //                }
-//        //            }
-//        //        }
-//    }
-//
-    //    func fetch() {
-    //        let userID = UserDefaults.standard.integer(forKey: "UserID")
-    //        let accountName = UserDefaults.standard.string(forKey: "accountName")
-    //        let url = "http://traxtfsapi.azurewebsites.net/trax/getdeveloperlist?userid=\(userID)&accountname=\(accountName!)"
-    //        let safeURL = url.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)
-    //        activityView.startAnimating()
-    //        Alamofire.request(safeURL!).responseJSON { (response) in
-    //           do {
-    //                let myDeveloperList = try JSONDecoder().decode([MyDeveloperList].self, from: response.data!)
-    //                self.myDevList = myDeveloperList
-    //                print("pass")
-    //                self.tableView.reloadData()
-    //                self.activityView.stopAnimating()
-    //            } catch let error {
-    //                print("\(error)")
-    //            }
-    //        }
-    //    }
+    func getPic() {
+        var iteration = 0
+        for i in 0...devProgressList.count - 1 {
+            if let imageLink = devProgressList[i].imageURL {
+                getImage(imageUrl: imageLink, token: self.token!) { (image) in
+                    iteration = iteration + 1
+                    self.devProgressList[i].image = image
+                    if (iteration == self.devProgressList.count) {
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
 }
 
 extension DeveloperListViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //        return myDevList?.count ?? 0
-        let dev = devProgress
-        print(dev.count)
-        return dev.count
+        return self.devProgressList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "dev_cell", for: indexPath) as! DeveloperTableViewCell
         cell.selectionStyle = .none
-        let progress = devProgress
-        cell.developerName.text = progress[indexPath.row].name
-        print(cell.developerName.text ?? 0)
-        cell.doingProgessLabel.text = String(progress[indexPath.row].doing)
-        cell.remainningProgessLabel.text = String(progress[indexPath.row].new)
-        let token = UserDefaults.standard.string(forKey: "Token")
-        getImage(imageUrl: progress[indexPath.row].imageURL!, token: token!) { (image) in
-            cell.developerPic.image = image
-            self.devImageList.append(image)
+        cell.developerName.text = devProgressList[indexPath.row].name
+        cell.doneProgressLabel.text = "\(devProgressList[indexPath.row].done)"
+        cell.doingProgessLabel.text = "\(devProgressList[indexPath.row].doing)"
+        cell.remainningProgessLabel.text = "\(devProgressList[indexPath.row].new)"
+        cell.imageView?.layer.cornerRadius = 30
+        cell.imageView?.clipsToBounds = true
+        if let image = resizeImage(image: devProgressList[indexPath.row].image!, newWidth: 60) {
+            cell.imageView?.image = image
         }
-        
-        
-        
-        
-        //        if (developer?.ImageUrl == nil) {
-        //             cell.developerPic.image = #imageLiteral(resourceName: "user")
-        //        } else {
-        //            cell.developerPic.image = {
-        //                if let decodedData = Data(base64Encoded: (developer?.ImageUrl)!, options: .ignoreUnknownCharacters) {
-        //                    if let image = UIImage(data: decodedData) {
-        //                        devImageList.append(image)
-        //                        return image
-        //                    } else {
-        //                        devImageList.append(#imageLiteral(resourceName: "user"))
-        //                        return #imageLiteral(resourceName: "user")
-        //                    }
-        //
-        //                } else {
-        //                    devImageList.append(#imageLiteral(resourceName: "user"))
-        //                    return #imageLiteral(resourceName: "user")
-        //                }
-        //            }()
-        //        }
-        //        cell.developerName.text = developer?.DisplayName
-        //        cell.doingProgessLabel.text = "\(developer?.TaskProgress?.DoingTask ?? 0)"
-        //        cell.doneProgressLabel.text = "\(developer?.TaskProgress?.DoneTask ?? 0)"
-        //        cell.remainningProgessLabel.text = "\(developer?.TaskProgress?.DueTask ?? 0)"
         return cell
     }
     
@@ -341,17 +242,22 @@ extension DeveloperListViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dev_vc = storyboard?.instantiateViewController(withIdentifier: "dev_vc") as! DeveloperViewController
-        
-        //        let developer = myDevList?[indexPath.row]
-        //        dev_vc.dev = {
-        //           let dev = Developer(DisplayName: developer?.DisplayName,
-        //                               WorkItemIDs: developer?.TaskProgress?.WorkItemList,
-        //                               Done: developer?.TaskProgress?.DoneTask,
-        //                               Doing: developer?.TaskProgress?.DoingTask,
-        //                               Due: developer?.TaskProgress?.DueTask)
-        //            return dev
-        //        }()
-        //        dev_vc.devImage = devImageList[indexPath.row]
+        let dev = devProgressList[indexPath.row]
+        let teamMemberTFS = TeamMemberTFS(name: dev.name!, imageURL: dev.imageURL ?? "", image: dev.image!)
+        let taskProgress = TaskProgress(complete: dev.done, doing: dev.doing, new: dev.new)
+        var tasks:[WorkItemFromTFS] = []
+        var bugs:[WorkItemFromTFS] = []
+        for task in dev.workItemList! {
+            if task.type == "Task" {
+                tasks.append(task)
+            } else if task.type == "Bug" {
+                bugs.append(task)
+            }
+        }
+        dev_vc.dev = MemberTaskInformation(teamMember: teamMemberTFS,
+                                           taskProgress: taskProgress,
+                                           task: tasks,
+                                           bug: bugs)
         navigationController?.pushViewController(dev_vc, animated: true)
     }
     

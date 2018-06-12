@@ -42,7 +42,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     func fetch() {
         let token = UserDefaults.standard.string(forKey: "Token")
         print(token!)
-        var interation = 0
+        var iteration = 0
         getProjectList(accountName: self.accountName!, token: token!) { (projectList) in
             
             self.projectListFinal = projectList
@@ -70,8 +70,8 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                                     DispatchQueue.main.async(execute: {
                                         getImage(imageUrl: TeamMemberTemp[k].imageURL, token: token!, result: { (Image) in
                                             self.projectListFinal[i].teamList![k].image = Image
-                                            interation = interation + 1
-                                            if interation == self.projectListFinal.count {
+                                            iteration = iteration + 1
+                                            if iteration == self.projectListFinal.count {
                                                 DispatchQueue.main.async(execute: {
                                                     self.tableView.reloadData()
                                                     self.activityView.stopAnimating()
