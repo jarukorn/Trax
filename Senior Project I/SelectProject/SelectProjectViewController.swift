@@ -43,6 +43,8 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
         let token = UserDefaults.standard.string(forKey: "Token")
         print(token!)
         var iteration = 0
+        var iteration2 = 0
+        var checker = 0
         getProjectList(accountName: self.accountName!, token: token!) { (projectList) in
             
             self.projectListFinal = projectList
@@ -66,17 +68,19 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                         getTeamID(accountName: self.accountName!, token: token!, projectID: projectList[i].id! , result: { (teamID) in
                             getTeamMember(accountName: self.accountName!, token: token!, projectID: projectList[i].id!, teamID: teamID, result: { (TeamMemberTemp) in
                                 self.projectListFinal[i].teamList = TeamMemberTemp
+                                
                                 for k in 0...TeamMemberTemp.count-1 {
                                     DispatchQueue.main.async(execute: {
                                         getImage(imageUrl: TeamMemberTemp[k].imageURL, token: token!, result: { (Image) in
-                                            self.projectListFinal[i].teamList![k].image = Image
                                             iteration = iteration + 1
-                                            if iteration == self.projectListFinal.count {
+                                            self.projectListFinal[i].teamList![k].image = Image
+                                            iteration2 = iteration2 + 1
+//                                            if iteration2 == TeamMemberTemp.count {
                                                 DispatchQueue.main.async(execute: {
                                                     self.tableView.reloadData()
                                                     self.activityView.stopAnimating()
                                                 })
-                                            }
+//                                            }
                                         })
                                     })
                                    

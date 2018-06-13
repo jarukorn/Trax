@@ -40,6 +40,9 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         let token = UserDefaults.standard.string(forKey: "Token")
         
         if dev?.task?.count != 0 {
+            self.dev?.task?.sort(by: { (firstItem, secondItem) -> Bool in
+                firstItem.stateValue < secondItem.stateValue
+            })
             for i in 0...(dev?.task?.count)!-1 {
                 var interation = 0
                 getComment(accountName: accountName!, token: token!, task: (dev?.task![i])!) { (CommentList) in
@@ -53,6 +56,9 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         if dev?.bug?.count != 0 {
+            self.dev?.bug?.sort(by: { (firstItem, secondItem) -> Bool in
+                firstItem.stateValue < secondItem.stateValue
+            })
             for i in 0...(dev?.bug?.count)!-1 {
                 var interation = 0
                 getComment(accountName: accountName!, token: token!, task: (dev?.bug![i])!) { (CommentList) in
@@ -65,6 +71,7 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
             }
         }
         
+
         
     }
 

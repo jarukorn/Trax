@@ -16,6 +16,8 @@
 		D71237AF2061D09000E9CDA7 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71237AE2061D09000E9CDA7 /* ProjectTableViewCell.swift */; };
 		D71237B12061E04500E9CDA7 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71237B02061E04500E9CDA7 /* OverviewViewController.swift */; };
 		D723E61A20624A0C003BFE4E /* DeveloperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723E61920624A0C003BFE4E /* DeveloperTableViewCell.swift */; };
+		D730ECDF20D0ED8100315CF3 /* DetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D730ECDE20D0ED8100315CF3 /* DetailHeader.swift */; };
+		D730ECE120D0ED9C00315CF3 /* DetailHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = D730ECE020D0ED9C00315CF3 /* DetailHeader.xib */; };
 		D736FB94207C08A100909E0D /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D736FB93207C08A100909E0D /* CommentTableViewCell.swift */; };
 		D73C280820BE9A5000F15C2B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73C280720BE9A5000F15C2B /* API.swift */; };
 		D746875D20B6C746009DEE99 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D746875C20B6C746009DEE99 /* LaunchScreenViewController.swift */; };
@@ -103,6 +105,8 @@
 		D71237AE2061D09000E9CDA7 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		D71237B02061E04500E9CDA7 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		D723E61920624A0C003BFE4E /* DeveloperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperTableViewCell.swift; sourceTree = "<group>"; };
+		D730ECDE20D0ED8100315CF3 /* DetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeader.swift; sourceTree = "<group>"; };
+		D730ECE020D0ED9C00315CF3 /* DetailHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailHeader.xib; sourceTree = "<group>"; };
 		D736FB93207C08A100909E0D /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		D73C280720BE9A5000F15C2B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		D746875C20B6C746009DEE99 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 				D7ABB7E2207CA5BB00342020 /* SelectProject */,
 				D7ABB7E3207CA63400342020 /* Overview */,
 				D7F9C492208667E700CFA61B /* MyTaskViewController.swift */,
+				D730ECDE20D0ED8100315CF3 /* DetailHeader.swift */,
+				D730ECE020D0ED9C00315CF3 /* DetailHeader.xib */,
 				D747AE75205ECEA7005D1CE0 /* LaunchScreen.storyboard */,
 				D747AE70205ECEA7005D1CE0 /* Main.storyboard */,
 				D747AE6E205ECEA7005D1CE0 /* ViewController.swift */,
@@ -511,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D747AE77205ECEA7005D1CE0 /* LaunchScreen.storyboard in Resources */,
+				D730ECE120D0ED9C00315CF3 /* DetailHeader.xib in Resources */,
 				D747AE74205ECEA7005D1CE0 /* Assets.xcassets in Resources */,
 				D747AE72205ECEA7005D1CE0 /* Main.storyboard in Resources */,
 			);
@@ -718,6 +725,7 @@
 				D7F8CB41206B7D73001037DF /* BugTableViewCell.swift in Sources */,
 				D7ABB7E8207CAA1200342020 /* ProjectList.swift in Sources */,
 				D7503596206B666D00216FF1 /* DeveloperViewController.swift in Sources */,
+				D730ECDF20D0ED8100315CF3 /* DetailHeader.swift in Sources */,
 				D71237AD2061CEEC00E9CDA7 /* Support.swift in Sources */,
 				D7A2B0C8208A83C000D5E0F8 /* TabbarViewController.swift in Sources */,
 				D747AE6F205ECEA7005D1CE0 /* ViewController.swift in Sources */,
@@ -931,11 +939,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 574W5Z3DKV;
+				DEVELOPMENT_TEAM = T88JY93Y9S;
 				INFOPLIST_FILE = "Senior Project I/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Jarukorn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jarukorn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Senior Project I/Senior Project I-Bridging-Header.h";
@@ -954,11 +962,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 574W5Z3DKV;
+				DEVELOPMENT_TEAM = T88JY93Y9S;
 				INFOPLIST_FILE = "Senior Project I/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Jarukorn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jarukorn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Senior Project I/Senior Project I-Bridging-Header.h";
@@ -1041,11 +1049,10 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 574W5Z3DKV;
+				DEVELOPMENT_TEAM = T88JY93Y9S;
 				INFOPLIST_FILE = tdExtensions/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Jarukorn.tdExtensions;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jarukorn.tdExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -1061,11 +1068,10 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 574W5Z3DKV;
+				DEVELOPMENT_TEAM = T88JY93Y9S;
 				INFOPLIST_FILE = tdExtensions/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Jarukorn.tdExtensions;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jarukorn.tdExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;

@@ -126,11 +126,6 @@ class LoginViewController: UIViewController {
 
     @IBAction func loginBtnClicked(_ sender: Any) {
         fetch(username: emailTextField.text!, password: passwordTextField.text!)
-        timeNotifications(inSeconds: 3) { (success) in
-            if success {
-                print("Successfully Notified")
-            }
-        }
     }
     
     @IBAction func signUpBtnClicked(_ sender: Any) {
@@ -149,7 +144,6 @@ class LoginViewController: UIViewController {
         
         content.title = "Welcome"
         content.subtitle = "Enjoy using our application!"
-        content.body = "ealhuioklew knvoenrxydtufyiguohslobejaknsc lwedbjvjnwek"
         
         
         let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)

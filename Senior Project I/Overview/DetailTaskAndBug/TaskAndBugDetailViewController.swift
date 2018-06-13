@@ -15,20 +15,13 @@ class TaskAndBugDetailViewController: UIViewController {
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var taskName: UILabel!
-    @IBOutlet weak var taskPirority: UILabel!
-    @IBOutlet weak var startDate: UILabel!
-    @IBOutlet weak var status: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var devPicture: UIImageView!
-    @IBOutlet weak var taskCardView: UIView!
-    @IBOutlet weak var taskProfileView: UIView!
+    let headerView = Bundle.main.loadNibNamed("DetailHeader", owner: self, options: nil)?.first as! DetailHeader
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        headerView.set(task: task!)
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         activityView.hidesWhenStopped = true
@@ -36,49 +29,49 @@ class TaskAndBugDetailViewController: UIViewController {
         activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
         
-        if let t = task {
-            taskName.text = t.title
-            taskPirority.text = {
-                switch t.priority {
-                case 1:
-                    return "High"
-                case 2:
-                    return "Medium"
-                case 3:
-                    return "Low"
-                case 4:
-                    return "Very Low"
-                default:
-                    break
-                }
-                return ""
-            }()
-            status.text = t.state
-            status.textColor = {
-                switch t.state {
-                case "Done":
-                    return #colorLiteral(red: 0.2, green: 0.6784313725, blue: 0.3725490196, alpha: 1)
-                case "Closed":
-                    return #colorLiteral(red: 0.2, green: 0.6784313725, blue: 0.3725490196, alpha: 1)
-                case "In Progress":
-                    return #colorLiteral(red: 1, green: 0.8254478574, blue: 0.4373552203, alpha: 1)
-                case "Active":
-                    return #colorLiteral(red: 1, green: 0.8254478574, blue: 0.4373552203, alpha: 1)
-                case "To Do":
-                    return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1)
-                case "New":
-                    return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1)
-                default:
-                    return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                }
-            }()
-            descriptionLabel.text = t.description
-            devPicture.image = devImage
-            startDate.text = String((t.createdDate?.prefix(10))!)
-            
-        }
+//        if let t = task {
+//            taskName.text = t.title
+//            taskPirority.text = {
+//                switch t.priority {
+//                case 1:
+//                    return "High"
+//                case 2:
+//                    return "Medium"
+//                case 3:
+//                    return "Low"
+//                case 4:
+//                    return "Very Low"
+//                default:
+//                    break
+//                }
+//                return ""
+//            }()
+//            status.text = t.state
+//            status.textColor = {
+//                switch t.state {
+//                case "Done":
+//                    return #colorLiteral(red: 0.2, green: 0.6784313725, blue: 0.3725490196, alpha: 1)
+//                case "Closed":
+//                    return #colorLiteral(red: 0.2, green: 0.6784313725, blue: 0.3725490196, alpha: 1)
+//                case "In Progress":
+//                    return #colorLiteral(red: 1, green: 0.8254478574, blue: 0.4373552203, alpha: 1)
+//                case "Active":
+//                    return #colorLiteral(red: 1, green: 0.8254478574, blue: 0.4373552203, alpha: 1)
+//                case "To Do":
+//                    return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1)
+//                case "New":
+//                    return #colorLiteral(red: 0.5019607843, green: 0.5019607843, blue: 0.5019607843, alpha: 1)
+//                default:
+//                    return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//                }
+//            }()
+//            descriptionLabel.text = t.description
+////            devPicture.image = devImage
+//            startDate.text = String((t.createdDate?.prefix(10))!)
+//
+//        }
         
-        taskProfileView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50 + taskCardView.frame.height + 8)
+//        taskProfileView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50 + taskCardView.frame.height + 8)
         
         let role = UserDefaults.standard.string(forKey: "Role")
         if (role != "CEO" && task?.state != "Closed") {
@@ -124,6 +117,20 @@ class TaskAndBugDetailViewController: UIViewController {
 }
 
 extension TaskAndBugDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return headerView.frame.height + 8
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        return headerView
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return task?.comment?.count ?? 0
     }
@@ -145,7 +152,6 @@ extension TaskAndBugDetailViewController: UITableViewDelegate, UITableViewDataSo
         cell.commentLabel.text = comment?.description ?? ""
         cell.commentView.layer.cornerRadius = cell.commentLabel.bounds.height * 0.2
         return cell
-        //        return UITableViewCell()
     }
     
     

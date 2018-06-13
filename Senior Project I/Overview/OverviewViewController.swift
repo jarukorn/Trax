@@ -107,30 +107,34 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
             
         }
         var interation = 0
-        for i in 0...self.project!.task!.count-1 {
-            getComment(accountName: accountName!, token: token!, task: project!.task![i]) { (CommentList) in
-                self.project!.task![i].comment = CommentList
-                interation = interation + 1
-                if (interation == self.project!.task!.count-1) {
-                    self.tasks = (self.project?.task?.filter({ (workitem) -> Bool in
-                        return workitem.type == "Task"
-                    }))!
-                    
-                    self.bugs = (self.project?.task?.filter({ (workitem) -> Bool in
-                        return workitem.type == "Bug"
-                    }))!
-                    
-                    self.tasks.sort { (firstItem, secondItem) -> Bool in
-                        firstItem.stateValue < secondItem.stateValue
+        let projectTaskTempCount = (self.project?.task?.count) ?? 0
+        if projectTaskTempCount != 0 {
+            for i in 0...projectTaskTempCount-1 {
+                getComment(accountName: accountName!, token: token!, task: project!.task![i]) { (CommentList) in
+                    self.project!.task![i].comment = CommentList
+                    interation = interation + 1
+                    if (interation == self.project!.task!.count-1) {
+                        self.tasks = (self.project?.task?.filter({ (workitem) -> Bool in
+                            return workitem.type == "Task"
+                        }))!
+                        
+                        self.bugs = (self.project?.task?.filter({ (workitem) -> Bool in
+                            return workitem.type == "Bug"
+                        }))!
+                        
+                        self.tasks.sort { (firstItem, secondItem) -> Bool in
+                            firstItem.stateValue < secondItem.stateValue
+                        }
+                        self.bugs.sort { (firstItem, secondItem) -> Bool in
+                            firstItem.stateValue < secondItem.stateValue
+                        }
+                        self.table.reloadData()
                     }
-                    self.bugs.sort { (firstItem, secondItem) -> Bool in
-                        firstItem.stateValue < secondItem.stateValue
-                    }
-                    self.table.reloadData()
                 }
+                
             }
-            
         }
+       
         
         print(memberTaskList.count)
         

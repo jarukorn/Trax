@@ -36,6 +36,17 @@ class LaunchScreenViewController: UIViewController {
         return false
     }
     
+    func isFaceIdSupported() -> Bool {
+        
+        let context = LAContext()
+        if #available(iOS 11.0, *){
+            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+                return context.biometryType == LABiometryType.faceID
+            }
+        }
+        return false
+    }
+    
     func fetch(username:String, password:String) {
         activityView.startAnimating()
         if Connectivity.isConnectedToInternet() {
@@ -91,16 +102,12 @@ class LaunchScreenViewController: UIViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
-        timeNotifications(inSeconds: 3) { (success) in
-            if success {
-                print("Successfully Notified")
-            }
-        }
+       
         
         if let username = UserDefaults.standard.string(forKey: "Username") {
             if let password = UserDefaults.standard.string(forKey: "Password") {
                 if (isTouchIdSupported()) {
-                    print("Support")
+                    print("TouchIDSupport")
                     let context = LAContext()
                     let reason = "Authenticate with Touch ID"
                     context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason,
@@ -109,51 +116,57 @@ class LaunchScreenViewController: UIViewController {
                                                  self.fetch(username: username, password: password)
                                             }
                                             else {
-                                                let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-                                                login_vc.modalTransitionStyle = .crossDissolve
-                                                self.present(login_vc, animated: true) {
-                                                    print("pass")
-                                                }
+                                                DispatchQueue.main.async(execute: {
+                                                    let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                                                    login_vc.modalTransitionStyle = .crossDissolve
+                                                    self.present(login_vc, animated: true) {
+                                                        print("pass")
+                                                    }
+                                                })
                                             }
                     })
+                } else if (isFaceIdSupported()) {
+                    print("FaceIDSupport")
+                    let context = LAContext()
+                    let reason = "Authenticate with Face ID"
+                    context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason,
+                                           reply: {(succes, error) in
+                                            if succes {
+                                                self.fetch(username: username, password: password)
+                                            }
+                                            else {
+                                                DispatchQueue.main.async(execute: {
+                                                    let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                                                    login_vc.modalTransitionStyle = .crossDissolve
+                                                    self.present(login_vc, animated: true) {
+                                                        print("pass")
+                                                    }
+                                                })
+                                            }
+                                            
+                    })
                 } else {
-                    let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-                    login_vc.modalTransitionStyle = .crossDissolve
-                    self.present(login_vc, animated: true) {
-                        print("pass")
-                    }
+                    DispatchQueue.main.async(execute: {
+                        let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                        login_vc.modalTransitionStyle = .crossDissolve
+                        self.present(login_vc, animated: true) {
+                            print("pass")
+                        }
+                    })
                 }
             }
         } else {
-            let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
-            login_vc.modalTransitionStyle = .crossDissolve
-            self.present(login_vc, animated: true) {
-                print("pass")
-            }
+            DispatchQueue.main.async(execute: {
+                let login_vc = self.storyboard?.instantiateViewController(withIdentifier: "login_vc") as! LoginViewController
+                login_vc.modalTransitionStyle = .crossDissolve
+                self.present(login_vc, animated: true) {
+                    print("pass")
+                }
+            })
         }
         
         
     }
     
-    func timeNotifications(inSeconds: TimeInterval, completion: @escaping (_ Success: Bool) -> ()) {
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
-        let content = UNMutableNotificationContent()
-        
-        content.title = "Welcome"
-        content.subtitle = "Enjoy using our application!"
-        content.body = "ealhuioklew knvoenrxydtufyiguohslobejaknsc lwedbjvjnwek"
-        
-        
-        let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { (error) in
-            if error != nil {
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
 }
 

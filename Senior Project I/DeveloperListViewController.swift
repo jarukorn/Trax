@@ -128,10 +128,10 @@ class DeveloperListViewController: UIViewController {
                             progress.workItemList = workItems
                            
                         }
-                        if iteration4 == self.teamMember.count && iteration5 == workItemNumberList.count {
+//                        if iteration4 == self.teamMember.count && iteration5 == workItemNumberList.count {
                             print(self.allTasks)
                             self.modifyPresenter()
-                        }
+//                        }
                         
                     })
                 } else {
@@ -145,8 +145,9 @@ class DeveloperListViewController: UIViewController {
     func modifyPresenter() {
         print(allTasks.count)
         print(teamMember.count)
-        
+        devProgressList = []
         for team in teamMember {
+           
             let dev = DevProgress(name: team.name, imageURL: team.imageURL, image: nil, new: 0, doing: 0, done: 0, workItemList: [WorkItemFromTFS]())
             devProgressList.append(dev)
         }
