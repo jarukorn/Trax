@@ -230,8 +230,14 @@ extension DeveloperListViewController: UITableViewDataSource, UITableViewDelegat
         cell.remainningProgessLabel.text = "\(devProgressList[indexPath.row].new)"
         cell.imageView?.layer.cornerRadius = 30
         cell.imageView?.clipsToBounds = true
-        if let image = resizeImage(image: devProgressList[indexPath.row].image!, newWidth: 60) {
-            cell.imageView?.image = image
+        if devProgressList[indexPath.row].image != nil {
+            if let image = resizeImage(image: devProgressList[indexPath.row].image!, newWidth: 60) {
+                cell.imageView?.image = image
+            } else {
+                cell.imageView?.image = nil
+            }
+        } else {
+            cell.imageView?.image = nil
         }
         return cell
     }

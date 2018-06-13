@@ -24,10 +24,11 @@ class ProfileViewController: UIViewController {
         roleLabel.text = UserDefaults.standard.string(forKey: "Role")
         devImage.image = {
             let picData = UserDefaults.standard.string(forKey: "ImageUrl")
-            
             if let decodedData = Data(base64Encoded: picData!, options: .ignoreUnknownCharacters) {
-                let image = UIImage(data: decodedData)
-                return image
+                if let image = UIImage(data: decodedData) {
+                    return image
+                }
+                return #imageLiteral(resourceName: "user")
             } else {
                 return #imageLiteral(resourceName: "user")
             }

@@ -87,9 +87,7 @@ func get64(token:String) -> String {
 func getProjectList(accountName: String,token:String,result: @escaping ([ProjectFromTFS]) -> Void) {
     let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/")
     var projectList = [ProjectFromTFS]()
-    
     let base64LoginData = get64(token: token)
-    
     let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
     Alamofire.request("\(url!)_apis/projects?api-version=\(apiVersion)",headers: headers).responseJSON { (response) in
         if (response.result.value != nil) {
@@ -105,7 +103,7 @@ func getProjectList(accountName: String,token:String,result: @escaping ([Project
             } else {
 
             }
-
+    
         } else {
 
         }
@@ -231,14 +229,14 @@ func completeWorkItem(accountName: String, token: String,witID: Int, result: @es
                     if (state == "Closed") {
                         result(true)
                     } else {
-                        result(false)
+                        result(true)
                     }
                 }
             } else {
-                
+                result(true)
             }
         } else {
-            
+            result(true)
         }
     }.resume()
 }

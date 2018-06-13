@@ -44,7 +44,6 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
         print(token!)
         var iteration = 0
         var iteration2 = 0
-        var checker = 0
         getProjectList(accountName: self.accountName!, token: token!) { (projectList) in
             
             self.projectListFinal = projectList
