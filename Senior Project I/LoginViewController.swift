@@ -8,9 +8,9 @@
 
 import UIKit
 import Alamofire
-import LocalAuthentication
-import UserNotifications
-import GoogleMobileAds
+//import LocalAuthentication
+//import UserNotifications
+//import GoogleMobileAds
 
 class LoginViewController: UIViewController {
 
@@ -20,13 +20,13 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var signUpBtn: UIButton!
     let activityView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
-    @IBOutlet weak var adsBanner: GADBannerView!
+//    @IBOutlet weak var adsBanner: GADBannerView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        adsBanner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-        adsBanner.rootViewController = self
-        adsBanner.load(GADRequest())
+//        adsBanner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+//        adsBanner.rootViewController = self
+//        adsBanner.load(GADRequest())
         
         loginBtn.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         signUpBtn.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -35,25 +35,25 @@ class LoginViewController: UIViewController {
         activityView.hidesWhenStopped = true
         activityView.color = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
         view.addSubview(activityView)
-        if let username = UserDefaults.standard.string(forKey: "Username") {
-            if let password = UserDefaults.standard.string(forKey: "Password") {
-                //fetch(username: username,password: password)
-            }
-        }
-        
-        timeNotifications(inSeconds: 3) { (success) in
-            if success {
-                print("Successfully Notified")
-            }
-        }
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {(success, error) in
-            if error != nil {
-                print("Authorization Unsuccessful")
-            } else {
-                print("Authorization Successful")
-            }
-        }
+//        if let username = UserDefaults.standard.string(forKey: "Username") {
+//            if let password = UserDefaults.standard.string(forKey: "Password") {
+//                fetch(username: username,password: password)
+//            }
+//        }
+//
+//        timeNotifications(inSeconds: 3) { (success) in
+//            if success {
+//                print("Successfully Notified")
+//            }
+//        }
+//
+//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) {(success, error) in
+//            if error != nil {
+//                print("Authorization Unsuccessful")
+//            } else {
+//                print("Authorization Successful")
+//            }
+//        }
         
         
         
@@ -137,24 +137,24 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func timeNotifications(inSeconds: TimeInterval, completion: @escaping (_ Success: Bool) -> ()) {
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
-        let content = UNMutableNotificationContent()
-        
-        content.title = "Welcome"
-        content.subtitle = "Enjoy using our application!"
-        
-        
-        let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { (error) in
-            if error != nil {
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
+//    func timeNotifications(inSeconds: TimeInterval, completion: @escaping (_ Success: Bool) -> ()) {
+//        
+////        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: inSeconds, repeats: false)
+////        let content = UNMutableNotificationContent()
+////
+////        content.title = "Welcome"
+////        content.subtitle = "Enjoy using our application!"
+//        
+//        
+////        let request = UNNotificationRequest(identifier: "customNotification", content: content, trigger: trigger)
+////
+//        UNUserNotificationCenter.current().add(request) { (error) in
+//            if error != nil {
+//                completion(false)
+//            } else {
+//                completion(true)
+//            }
+//        }
+//    }
 
 }

@@ -41,13 +41,8 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     
     func fetch() {
         let token = UserDefaults.standard.string(forKey: "Token")
-        print(token!)
-        var iteration = 0
-        var iteration2 = 0
         getProjectList(accountName: self.accountName!, token: token!) { (projectList) in
-            
             self.projectListFinal = projectList
-            
             for i in 0...self.projectListFinal.count-1 {
                 getWorkItemNumber(accountName: self.accountName!, projectName: self.projectListFinal[i].name!, token: token!, resume: { (workItemArray) in
                     var workItemStr = ""
@@ -59,7 +54,7 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                                 workItemStr = workItemStr + ","
                             }
                         }
-                        
+
                         getTaskFromWorkItemID(token: token!, id: workItemStr, accountName: self.accountName!, resume: { (workItems) in
                             self.projectListFinal[i].task = workItems
                         })
@@ -67,19 +62,16 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
                         getTeamID(accountName: self.accountName!, token: token!, projectID: projectList[i].id! , result: { (teamID) in
                             getTeamMember(accountName: self.accountName!, token: token!, projectID: projectList[i].id!, teamID: teamID, result: { (TeamMemberTemp) in
                                 self.projectListFinal[i].teamList = TeamMemberTemp
-                                
                                 for k in 0...TeamMemberTemp.count-1 {
                                     DispatchQueue.main.async(execute: {
                                         getImage(imageUrl: TeamMemberTemp[k].imageURL, token: token!, result: { (Image) in
-                                            iteration = iteration + 1
-                                            self.projectListFinal[i].teamList![k].image = Image
-                                            iteration2 = iteration2 + 1
-//                                            if iteration2 == TeamMemberTemp.count {
+                                            if (self.projectListFinal[i].teamList?.count != 0) {
+                                                self.projectListFinal[i].teamList![k].image = Image
+                                            }
                                                 DispatchQueue.main.async(execute: {
                                                     self.tableView.reloadData()
                                                     self.activityView.stopAnimating()
                                                 })
-//                                            }
                                         })
                                     })
                                    
@@ -102,6 +94,10 @@ class SelectProjectViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        self.projectListFinal.sort { (firstItem, secondItem) -> Bool in
+//            firstItem.taskProgress.doing + firstItem.taskProgress.new + firstItem.taskProgress.complete > secondItem.taskProgress.doing + secondItem.taskProgress.new +
+//                secondItem.taskProgress.complete
+//        }
         return projectListFinal.count
     }
     

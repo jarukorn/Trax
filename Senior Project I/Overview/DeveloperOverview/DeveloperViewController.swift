@@ -108,9 +108,6 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
             default:
                 break
             }
-
-            
-            
             cell.taskTitle.text = taskandBugInstance.title
             var temp = ""
             switch taskandBugInstance.priority {
@@ -152,7 +149,10 @@ class DeveloperViewController: UIViewController, UITableViewDataSource, UITableV
             cell.numberCommentLabel.text = "\(taskandBugInstance.comment?.count ?? 0)"
             var startDate = ""
             if let date = taskandBugInstance.createdDate {
-                startDate  = String(date.prefix(10))
+                startDate = String(date.prefix(10))
+                startDate = startDate.replacingOccurrences(of: "-", with: "/")
+                let temp = startDate.split(separator: "/")
+                startDate = "\(temp[2])/\(temp[1])/\(temp[0])"
             }
             cell.dateLabel.text = startDate
             return cell

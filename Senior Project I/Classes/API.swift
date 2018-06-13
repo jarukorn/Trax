@@ -84,12 +84,12 @@ func get64(token:String) -> String {
     return base64LoginData
 }
 
-func getProjectList(accountName: String,token:String,result: @escaping ([ProjectFromTFS]) -> Void) {
-    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/")
+func getProjectList(accountName: String, token: String, result: @escaping ([ProjectFromTFS]) -> Void) {
+    let url = URL(string: "https://\(accountName).visualstudio.com/DefaultCollection/_apis/projects?api-version=\(apiVersion)")
     var projectList = [ProjectFromTFS]()
     let base64LoginData = get64(token: token)
     let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
-    Alamofire.request("\(url!)_apis/projects?api-version=\(apiVersion)",headers: headers).responseJSON { (response) in
+    Alamofire.request(url!, headers: headers).responseJSON { (response) in
         if (response.result.value != nil) {
             if let json = response.result.value as? [String:AnyObject] {
                 let value = json["value"] as? [[String:AnyObject]]
@@ -100,12 +100,7 @@ func getProjectList(accountName: String,token:String,result: @escaping ([Project
                     projectList.append(projectTemp)
                 }
                 result(projectList)
-            } else {
-
             }
-    
-        } else {
-
         }
     }.resume()
 }
@@ -118,10 +113,10 @@ func getWorkItemNumber(accountName: String, projectName: String,token : String, 
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     let pjson =
     """
- {
-  "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task' and [System.TeamProject] = '\(projectName)' or [System.WorkItemType] = 'Bug' and [System.TeamProject] = '\(projectName)' "
+    {
+    "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Task' and [System.TeamProject] = '\(projectName)' or [System.WorkItemType] = 'Bug' and [System.TeamProject] = '\(projectName)' "
     }
-"""
+    """
     let data = (pjson.data(using: .utf8))! as Data
     let base64LoginData = get64(token: token)
     let headers: HTTPHeaders = ["Authorization": "Basic \(base64LoginData)"]
@@ -175,7 +170,7 @@ func getTaskFromWorkItemID(token: String, id: String, accountName: String,resume
                 resume(workItemList)
             }
         }
-    }.resume()
+        }.resume()
 }
 
 func getComment(accountName:String, token:String, task: WorkItemFromTFS, resume: @escaping ([CommentFromTFS]) -> Void) {
@@ -201,7 +196,7 @@ func getComment(accountName:String, token:String, task: WorkItemFromTFS, resume:
                 resume(commentList)
             }
         }
-    }.resume()
+        }.resume()
 }
 
 
@@ -238,7 +233,7 @@ func completeWorkItem(accountName: String, token: String,witID: Int, result: @es
         } else {
             result(true)
         }
-    }.resume()
+        }.resume()
 }
 
 func getTeamMember(accountName: String, token: String, projectID: String, teamID:String, result: @escaping ([TeamMemberTFS]) -> Void ) {
@@ -280,7 +275,7 @@ func getImage(imageUrl: String,token: String, result: @escaping (UIImage) -> Voi
         }
         
         result(tfs)
-    }.resume()
+        }.resume()
 }
 
 func getTeamID(accountName: String,token:String,projectID:String,result: @escaping (String) -> Void)  {
@@ -298,7 +293,7 @@ func getTeamID(accountName: String,token:String,projectID:String,result: @escapi
                 }
             }
         }
-    }.resume()
+        }.resume()
 }
 
 
@@ -320,7 +315,7 @@ func getAccountList(tfs_id: String, token: String, resume: @escaping ([Account])
                 resume(accountList)
             }
         }
-    }.resume()
+        }.resume()
 }
 
 func getTodayTask(accountName:String, developerName: String, token : String, resume: @escaping ([Int]) -> Void) {
@@ -353,7 +348,7 @@ func getTodayTask(accountName:String, developerName: String, token : String, res
                 resume(workItemList)
             }
         }
-    }.resume()
+        }.resume()
     
 }
 

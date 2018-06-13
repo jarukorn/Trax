@@ -14,7 +14,7 @@ class AccountListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Account Lists"
+        navigationItem.title = "Account List"
         // Do any additional setup after loading the view.
     }
 

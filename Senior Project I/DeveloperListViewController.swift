@@ -218,6 +218,9 @@ class DeveloperListViewController: UIViewController {
 extension DeveloperListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.devProgressList.sort { (firstItem, secondItem) -> Bool in
+            firstItem.doing + firstItem.new + firstItem.done > secondItem.doing + secondItem.new + secondItem.done
+        }
         return self.devProgressList.count
     }
     

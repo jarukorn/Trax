@@ -20,7 +20,14 @@ class DetailHeader: UIView {
     func set(task: WorkItemFromTFS) {
         
         taskName.text = task.title ?? ""
-        taskDate.text = String((task.createdDate?.prefix(10))!) ?? ""
+        taskDate.text = {
+            var startDate = String((task.createdDate?.prefix(10))!)
+            startDate = startDate.replacingOccurrences(of: "-", with: "/")
+            let temp = startDate.split(separator: "/")
+            startDate = "\(temp[2])/\(temp[1])/\(temp[0])"
+            return startDate
+        }()
+        
         taskStatus.text = task.state ?? ""
         taskDiscription.text = task.description ?? ""
 //        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: view.frame.width, height: taskDiscription.frame.height + 8)

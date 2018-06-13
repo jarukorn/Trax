@@ -157,7 +157,7 @@ extension MyTaskViewController: UITableViewDelegate, UITableViewDataSource {
         cell.projectName.text = workitem.projectName
         
         cell.numberCommentLabel.text = "\(workitem.comment?.count ?? 0)"
-        cell.dateLabel.text = workitem.createdDate
+        cell.dateLabel.text = String((workitem.createdDate?.prefix(10))!)
         return cell
     }
     

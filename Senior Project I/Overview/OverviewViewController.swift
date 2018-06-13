@@ -38,13 +38,16 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Project Overview"
+        navigationItem.title = "\(project!.name!)"
         fetch()
         
         numberofCompleteLabel.text = "\(project!.taskProgress.complete)"
         numberofDoingLabel.text = "\(project!.taskProgress.doing)"
         numberofRemainingLabel.text = "\(project!.taskProgress.new)"
         
+        self.memberTaskList.sort { (firstItem, secondItem) -> Bool in
+            firstItem.taskProgress.doing + firstItem.taskProgress.new > secondItem.taskProgress.doing + secondItem.taskProgress.new
+        }
     }
     
     func fetch() {
@@ -52,7 +55,6 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
         let token = UserDefaults.standard.string(forKey: "Token")
 
         if let projectTemp = project {
-            self.projectNameLabel.text = project?.name
             self.numberofDoingLabel.text = "\(projectTemp.taskProgress.doing)"
             self.numberofCompleteLabel.text = "\(projectTemp.taskProgress.complete)"
             self.numberofRemainingLabel.text = "\(projectTemp.taskProgress.new)"
@@ -165,13 +167,10 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dev_cell", for: indexPath) as! DeveloperTableViewCell
             cell.selectionStyle = .none
-            
             cell.developerName.text = memberTaskList[indexPath.row].teamMember?.name
             cell.doingProgessLabel.text = "\(memberTaskList[indexPath.row].taskProgress.doing)"
             cell.doneProgressLabel.text = "\(memberTaskList[indexPath.row].taskProgress.complete)"
             cell.remainningProgessLabel.text = "\(memberTaskList[indexPath.row].taskProgress.new)"
-            
-            
             cell.developerPic.image = {
                 if memberTaskList[indexPath.row].teamMember?.image == nil {
                     return #imageLiteral(resourceName: "user")
@@ -199,7 +198,7 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
                 let temp = list![0].dropLast()
                 cell.assignToLabel.text = "\(temp)"
             } else {
-                cell.assignToLabel.text = ""
+                cell.assignToLabel.text = "N/A"
             }
             
             switch taskandBugInstance[indexPath.row].state {
@@ -239,6 +238,9 @@ class OverviewViewController: UIViewController, UITableViewDataSource, UITableVi
             var startDate = ""
             if let date = taskandBugInstance[indexPath.row].createdDate {
                 startDate  = String(date.prefix(10))
+                startDate = startDate.replacingOccurrences(of: "-", with: "/")
+                let temp = startDate.split(separator: "/")
+                startDate = "\(temp[2])/\(temp[1])/\(temp[0])"
             }
 
             cell.dateLabel.text = startDate
